@@ -1,0 +1,26 @@
+<?php
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Presentasi>
+ */
+class PresentasiFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            'user_id' => mt_rand(1, 5),
+            'judul_id' => mt_rand(1, 5),
+            'jadwal' => fake()->time(),
+            'status' => fake()->boolean()
+        ];
+    }
+}
