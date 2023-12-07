@@ -13,7 +13,7 @@ class LogbookController extends Controller
      */
     public function index()
     {
-        //
+        return view('logbook.index');
     }
 
     /**

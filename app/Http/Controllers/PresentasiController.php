@@ -12,7 +12,7 @@ class PresentasiController extends Controller
      */
     public function index()
     {
-        //
+        return view('presentasi.index');
     }
 
     /**

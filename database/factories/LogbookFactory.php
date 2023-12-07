@@ -20,7 +20,6 @@ class LogbookFactory extends Factory
             'user_id' => mt_rand(1, 5),
             'judul_id' => mt_rand(1, 5),
             'description' => fake()->sentence(10),
-            'status' => fake()->boolean()
         ];
     }
 }

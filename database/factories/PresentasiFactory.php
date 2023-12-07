@@ -20,7 +20,6 @@ class PresentasiFactory extends Factory
             'user_id' => mt_rand(1, 5),
             'judul_id' => mt_rand(1, 5),
             'jadwal' => fake()->time(),
-            'status' => fake()->boolean()
         ];
     }
 }

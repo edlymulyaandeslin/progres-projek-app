@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->string('judul');
-            $table->string('pembimbing');
-            $table->boolean('status')->default(false);
+            $table->string('pembimbing')->default('');
+            $table->string('status')->default('diajukan');
             $table->timestamps();
         });
     }

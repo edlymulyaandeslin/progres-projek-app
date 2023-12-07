@@ -20,7 +20,6 @@ class JudulprojekFactory extends Factory
             'user_id' => mt_rand(1, 5),
             'judul' => fake()->title(),
             'pembimbing' => fake()->name(),
-            'status' => fake()->boolean()
         ];
     }
 }
