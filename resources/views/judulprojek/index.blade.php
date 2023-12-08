@@ -6,8 +6,9 @@
         <div class="bg-light rounded h-100 p-4">
 
             @if (session()->has('success'))
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
@@ -54,20 +55,26 @@
                                                     class="bi bi-search text-info"></i>
                                                 Show</button>
                                         </li>
+
                                         <li><a class="dropdown-item" href="/judulprojek/{{ $judulprojek->id }}/edit"><i
                                                     class="bi bi-pencil-square text-warning"></i>
                                                 Update
                                             </a></li>
-                                        <li><a class="dropdown-item text-{{ $judulprojek->status === 1 ? 'danger' : 'success' }}"
-                                                href="#">
-                                                <i class="bi bi-person-x"></i>
-                                                {{ $judulprojek->status === 1 ? 'Reject' : 'Approve' }}</a></li>
+
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
-                                        <li><a class="dropdown-item" href="#"><i
-                                                    class="bi bi-trash-fill text-danger"></i>
-                                                Delete</a></li>
+
+                                        <li>
+                                            <form action="/judulprojek/{{ $judulprojek->id }}" method="POST">
+                                                @method('delete')
+                                                @csrf
+                                                <button type="submit" class="dropdown-item"
+                                                    onclick="return confirm('Yakin ingin menghapus data ini?')"><i
+                                                        class="bi bi-trash-fill text-danger"></i>
+                                                    Delete</button>
+                                            </form>
+                                        </li>
                                     </ul>
                                 </div>
 

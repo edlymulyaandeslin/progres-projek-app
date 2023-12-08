@@ -18,7 +18,7 @@ class Logbook extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function judulprojek()
+    public function judul()
     {
         return $this->belongsTo(Judulprojek::class);
     }

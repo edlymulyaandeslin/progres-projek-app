@@ -21,13 +21,13 @@
                     <label for="pembimbing" class="form-label">Pembimbing</label>
                     <select class="form-select form-select-sm mb-3 @error('pembimbing') is-invalid @enderror"
                         name="pembimbing" id="pembimbing" aria-label=".form-select-sm example">
-                        <option selected disabled>Pilih Pembimbing</option>
+                        <option selected value="{{ '-' }}">Pilih Pembimbing</option>
                         @foreach ($users as $pembimbing)
-                            <option value="{{ $pembimbing->nama }}">{{ $pembimbing->nama }}</option>
-                            {{-- @if ($pembimbing->id)
-                        <option value="{{ $pembimbing->id }}" selected>{{ $pembimbing->nama }}</option>
+                            @if ($pembimbing->nama == $judulprojek->pembimbing)
+                                <option value="{{ $pembimbing->nama }}" selected>{{ $pembimbing->nama }}</option>
                             @else
-                            @endif --}}
+                                <option value="{{ $pembimbing->nama }}">{{ $pembimbing->nama }}</option>
+                            @endif
                         @endforeach
                     </select>
 
@@ -37,8 +37,16 @@
                     <select class="form-select form-select-sm mb-3" name="status" id="status"
                         aria-label=".form-select-sm example">
                         <option selected disabled>Pilih Status</option>
-                        <option value="diterima">Terima</option>
-                        <option value="ditolak">Tolak</option>
+                        @if ($judulprojek->status == 'diterima')
+                            <option value="diterima" selected>Diterima</option>
+                            <option value="ditolak">Ditolak</option>
+                        @elseif ($judulprojek->status == 'ditolak')
+                            <option value="diterima">Diterima</option>
+                            <option value="ditolak" selected>Ditolak</option>
+                        @else
+                            <option value="diterima">Diterima</option>
+                            <option value="ditolak">Ditolak</option>
+                        @endif
                     </select>
                 </div>
 

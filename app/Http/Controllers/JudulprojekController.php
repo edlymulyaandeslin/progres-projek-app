@@ -38,7 +38,9 @@ class JudulprojekController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'judul' => 'required'
+            'judul' => 'required',
+            'pembimbing' => 'string',
+            'status' => 'string'
         ]);
 
         $validateData['user_id'] = 1;
@@ -79,7 +81,6 @@ class JudulprojekController extends Controller
      */
     public function update($id, Request $request)
     {
-        // $dataUpdate = Judulprojek::find($id);
 
         $validateData = $request->validate([
             'judul' => 'required',
@@ -95,8 +96,10 @@ class JudulprojekController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Judulprojek $judulprojek)
+    public function destroy($id)
     {
-        //
+        Judulprojek::destroy($id);
+
+        return redirect('/judulprojek')->with('success', 'Data berhasil dihapus');
     }
 }

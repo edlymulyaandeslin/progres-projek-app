@@ -47,14 +47,13 @@
 
                 @include('layouts.partials.navbar')
 
-                <div class="container-fluid pt-4 px-4 vh-100">
-
+                <div class="container-fluid pt-4 px-4">
                     @yield('content')
-
                 </div>
 
-                @include('layouts.partials.footer')
-
+                <div class="container-fluid pt-4 px-4">
+                    @include('layouts.partials.footer')
+                </div>
             </div>
             <!-- Content End -->
 

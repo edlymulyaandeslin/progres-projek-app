@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'level_id' => mt_rand(1, 4),
+            'level_id' => 4,
             'nama' => 'Edly Mulya Andeslin',
             'email' => 'edlymulyaandeslin@gmail.com',
             'password' => bcrypt('password'),

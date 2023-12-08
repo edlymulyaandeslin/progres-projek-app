@@ -22,7 +22,7 @@
                         name="pembimbing" id="pembimbing" aria-label=".form-select-sm example">
                         <option selected disabled>Pilih Pembimbing</option>
                         @foreach ($pembimbing as $mentor)
-                            <option value="1">{{ $mentor->nama }}</option>
+                            <option value="{{ $mentor->nama }}">{{ $mentor->nama }}</option>
                         @endforeach
                     </select>
                     @error('pembimbing')
@@ -35,9 +35,9 @@
                     <label for="status" class="form-label">Status</label>
                     <select class="form-select form-select-sm mb-3" name="status" id="status"
                         aria-label=".form-select-sm example">
-                        <option selected disabled>Pilih Status</option>
-                        <option value="1">Approve</option>
-                        <option value="0">Reject</option>
+                        <option selected>Pilih Status</option>
+                        <option value="diterima">Diterima</option>
+                        <option value="ditolak">Ditolak</option>
                     </select>
                 </div>
 
