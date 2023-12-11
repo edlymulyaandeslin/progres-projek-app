@@ -13,8 +13,8 @@
                             </div>
                         </div>
                         <div class="ms-3">
-                            <h6 class="mb-0">Edly Mulya Andeslin</h6>
-                            <span>Admin</span>
+                            <h6 class="mb-0">{{ auth()->user()->nama }}</h6>
+                            <span>{{ auth()->user()->level->name }}</span>
                         </div>
                     </div>
                     <div class="navbar-nav w-100">
@@ -22,14 +22,19 @@
                         <a href="/" class="nav-item nav-link {{ Request::is('/*') ? 'active' : '' }}"><i
                                 class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
 
-                        <a href="/judulprojek"
-                            class="nav-item nav-link {{ Request::is('judulprojek*') ? 'active' : '' }}"><i
-                                class="fa fa-keyboard me-2"></i>Pengajuan
-                            Judul</a>
+                        @if (auth()->user()->level_id !== 2)
+                            <a href="/judulprojek"
+                                class="nav-item nav-link {{ Request::is('judulprojek*') ? 'active' : '' }}"><i
+                                    class="fa fa-keyboard me-2"></i>Pengajuan
+                                Judul</a>
+                        @endif
 
-                        <a href="/logbook" class="nav-item nav-link {{ Request::is('logbook*') ? 'active' : '' }}"><i
-                                class="fa fa-address-book me-2"></i>Log
-                            Book</a>
+                        @if (auth()->user()->level_id !== 3)
+                            <a href="/logbook"
+                                class="nav-item nav-link {{ Request::is('logbook*') ? 'active' : '' }}"><i
+                                    class="fa fa-address-book me-2"></i>Log
+                                Book</a>
+                        @endif
 
                         <a href="/presentasi"
                             class="nav-item nav-link {{ Request::is('presentasi*') ? 'active' : '' }}"><i

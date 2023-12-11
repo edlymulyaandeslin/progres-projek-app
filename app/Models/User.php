@@ -59,7 +59,7 @@ class User extends Authenticatable
         return $this->hasMany(Logbook::class);
     }
 
-    public function judulprojek()
+    public function judul()
     {
         return $this->hasMany(Judulprojek::class);
     }

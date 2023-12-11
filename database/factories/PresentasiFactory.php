@@ -18,8 +18,9 @@ class PresentasiFactory extends Factory
     {
         return [
             'user_id' => mt_rand(1, 5),
-            'judul_id' => mt_rand(1, 5),
-            'jadwal' => fake()->time(),
+            'judul_id' => 1,
+            'tanggal' => fake()->date(),
+            'jam' => fake()->time(),
         ];
     }
 }

@@ -16,7 +16,7 @@
                         </div>
                     @enderror
                 </div>
-                <div class="mb-3">
+                {{-- <div class="mb-3">
                     <label for="pembimbing" class="form-label">Pembimbing</label>
                     <select class="form-select form-select-sm mb-3 @error('pembimbing') is-invalid @enderror"
                         name="pembimbing" id="pembimbing" aria-label=".form-select-sm example">
@@ -35,13 +35,13 @@
                     <label for="status" class="form-label">Status</label>
                     <select class="form-select form-select-sm mb-3" name="status" id="status"
                         aria-label=".form-select-sm example">
-                        <option selected>Pilih Status</option>
+                        <option selected disabled>Pilih Status</option>
                         <option value="diterima">Diterima</option>
                         <option value="ditolak">Ditolak</option>
                     </select>
-                </div>
+                </div> --}}
 
-                <button type="submit" class="btn btn-outline-primary">Tambah</button>
+                <button type="submit" class="btn btn-outline-primary">Submit</button>
             </form>
         </div>
     </div>

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-    <div class="col-sm-12 col-xl-10 ">
+    <div class="col-sm-12 col-xl-12">
         <h3 class="mb-4">List Judul Projek</h3>
 
         <div class="bg-light rounded h-100 p-4">
@@ -12,75 +12,95 @@
                 </div>
             @endif
 
-            <div class="text-end mb-2">
-                <a href="/judulprojek/create" class="btn btn-sm btn-outline-primary ">Tambah <i class="fa fa-plus"></i></a>
-            </div>
+            @if (auth()->user()->level_id === 1 || auth()->user()->level_id === 4)
+                <div class="text-end mb-2">
+                    <a href="/judulprojek/create" class="btn btn-sm btn-outline-primary ">Tambah <i
+                            class="fa fa-plus"></i></a>
+                </div>
+            @endif
 
             <table class="table">
                 <thead>
                     <tr class="text-center">
                         <th scope="col">No</th>
-                        <th scope="col">User</th>
+                        @if (auth()->user()->level_id !== 1)
+                            <th scope="col">Mahasiswa</th>
+                        @endif
                         <th scope="col">Judul</th>
-                        <th scope="col">Mentor</th>
+                        <th scope="col">Pembimbing</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Aksi</th>
+                        @if (auth()->user()->level_id === 3 || auth()->user()->level_id === 4)
+                            <th scope="col">Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($judulprojeks as $judulprojek)
-                        <tr class="text-center">
-                            <th scope="row">{{ $loop->iteration }}</th>
-                            <td>{{ $judulprojek->user->nama }}</td>
-                            <td>{{ $judulprojek->judul }}</td>
-                            <td>{{ $judulprojek->pembimbing ? $judulprojek->pembimbing : '-' }}</td>
-                            <td>
-                                <p
-                                    class="bg-{{ $judulprojek->status == 'diterima' ? 'success' : ($judulprojek->status == 'ditolak' ? 'danger' : 'warning') }} rounded text-white">
+                    @if (count($judulprojeks) !== 0)
+                        @foreach ($judulprojeks as $judulprojek)
+                            <tr class="text-center">
+                                <th scope="row">{{ $loop->iteration }}</th>
 
-                                    {{ $judulprojek->status }}
-                                </p>
-                            </td>
-                            <td>
-                                <!-- Example single danger button -->
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-dark" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
-                                        <i class="bi bi-list"></i>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                                data-bs-target="#JudulView" data-id="{{ $judulprojek->id }}"><i
-                                                    class="bi bi-search text-info"></i>
-                                                Show</button>
-                                        </li>
+                                @if (auth()->user()->level_id !== 1)
+                                    <td>{{ $judulprojek->user->nama }}</td>
+                                @endif
 
-                                        <li><a class="dropdown-item" href="/judulprojek/{{ $judulprojek->id }}/edit"><i
-                                                    class="bi bi-pencil-square text-warning"></i>
-                                                Update
-                                            </a></li>
+                                <td>{{ $judulprojek->judul }}</td>
+                                <td>{{ $judulprojek->pembimbing ? $judulprojek->pembimbing : '-' }}</td>
+                                <td>
+                                    <p
+                                        class="bg-{{ $judulprojek->status == 'diterima' ? 'success' : ($judulprojek->status == 'ditolak' ? 'danger' : 'warning') }} rounded text-white">
 
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
+                                        {{ $judulprojek->status }}
+                                    </p>
+                                </td>
+                                @if (auth()->user()->level_id === 3 || auth()->user()->level_id === 4)
+                                    <td>
+                                        <!-- Example single danger button -->
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-dark"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-list"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                        data-bs-target="#JudulView" data-id="{{ $judulprojek->id }}"><i
+                                                            class="bi bi-search text-info"></i>
+                                                        Show</button>
+                                                </li>
 
-                                        <li>
-                                            <form action="/judulprojek/{{ $judulprojek->id }}" method="POST">
-                                                @method('delete')
-                                                @csrf
-                                                <button type="submit" class="dropdown-item"
-                                                    onclick="return confirm('Yakin ingin menghapus data ini?')"><i
-                                                        class="bi bi-trash-fill text-danger"></i>
-                                                    Delete</button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </div>
+                                                <li><a class="dropdown-item"
+                                                        href="/judulprojek/{{ $judulprojek->id }}/edit"><i
+                                                            class="bi bi-pencil-square text-warning"></i>
+                                                        Update
+                                                    </a></li>
 
-                            </td>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+
+                                                <li>
+                                                    <form action="/judulprojek/{{ $judulprojek->id }}" method="POST">
+                                                        @method('delete')
+                                                        @csrf
+                                                        <button type="submit" class="dropdown-item"
+                                                            onclick="return confirm('Yakin ingin menghapus data ini?')"><i
+                                                                class="bi bi-trash-fill text-danger"></i>
+                                                            Delete</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </td>
+                                @endif
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="6" class="text-center">No Data</td>
                         </tr>
-                    @endforeach
+                    @endif
 
                 </tbody>
             </table>

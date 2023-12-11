@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Logbook;
 use App\Models\Presentasi;
+use App\Models\Judulprojek;
 use Illuminate\Http\Request;
 
 class PresentasiController extends Controller
@@ -12,7 +15,29 @@ class PresentasiController extends Controller
      */
     public function index()
     {
-        return view('presentasi.index');
+        // admin
+        if (auth()->user()->level_id === 4) {
+
+            return view('presentasi.index', [
+                'presents' => Presentasi::all(),
+                'status' =>  Logbook::where('user_id', auth()->user()->id)->where('status', 'diterima')->get()
+            ]);
+        }
+
+        // mentor
+        if (auth()->user()->level_id === 2) {
+
+            return view('presentasi.index', [
+                'presents' => Presentasi::all(),
+                'status' =>  Logbook::where('user_id', auth()->user()->id)->where('status', 'diterima')->get()
+            ]);
+        }
+
+        // users / mahasiswa
+        return view('presentasi.index', [
+            'presents' => Presentasi::where('user_id', auth()->user()->id)->get(),
+            'status' =>  Logbook::where('user_id', auth()->user()->id)->where('status', 'diterima')->get()
+        ]);
     }
 
     /**
@@ -20,7 +45,9 @@ class PresentasiController extends Controller
      */
     public function create()
     {
-        //
+        return view('presentasi.create', [
+            'juduls' => Judulprojek::where('user_id', auth()->user()->id)->get()
+        ]);
     }
 
     /**
@@ -28,7 +55,15 @@ class PresentasiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'judul_id' => 'required',
+        ]);
+
+        $validateData['user_id'] = auth()->user()->id;
+
+        Presentasi::create($validateData);
+
+        return redirect('/presentasi')->with('success', 'Presentasi telah diajukan, mohon menunggu konfirmasi pembimbing atau koordinator');
     }
 
     /**
@@ -42,24 +77,37 @@ class PresentasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Presentasi $presentasi)
+    public function edit($id)
     {
-        //
+        return view('presentasi.edit', [
+            'present' => Presentasi::find($id)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Presentasi $presentasi)
+    public function update(Request $request, $id)
     {
-        //
+        $validateData = $request->validate([
+            'judul_id' => 'required',
+            'tanggal' => 'required',
+            'jam' => 'required',
+            'status' => 'string'
+        ]);
+
+        Presentasi::where('id', $id)->update($validateData);
+
+        return redirect('/presentasi')->with('success', 'Presentasi berhasil di update');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Presentasi $presentasi)
+    public function destroy($id)
     {
-        //
+        Presentasi::destroy($id);
+
+        return redirect('/presentasi')->with('success', 'Presentasi berhasil di hapus');
     }
 }

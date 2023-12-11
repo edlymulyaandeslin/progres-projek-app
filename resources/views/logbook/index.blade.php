@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-    <div class="col-sm-12 col-xl-10">
+    <div class="col-sm-12 col-xl-12">
         <h3 class="mb-4">Log Book</h3>
 
         <div class="bg-light rounded h-100 p-4">
@@ -12,78 +12,101 @@
                 </div>
             @endif
 
-            <div class="text-end mb-2">
-                <a href="/logbook/create" class="btn btn-sm btn-outline-primary ">Tambah <i class="fa fa-plus"></i></a>
-            </div>
+            @if (auth()->user()->level_id === 1 || auth()->user()->level_id === 4)
+                <div class="text-end mb-2">
+                    <a href="/logbook/create" class="btn btn-sm btn-outline-primary ">Tambah <i class="fa fa-plus"></i></a>
+                </div>
+            @endif
 
             <table class="table">
                 <thead>
                     <tr class="text-center">
                         <th scope="col">No</th>
-                        <th scope="col">User</th>
+                        @if (auth()->user()->level_id !== 1)
+                            <th scope="col">Mahasiswa</th>
+                        @endif
                         <th scope="col">Judul</th>
                         <th scope="col">Description</th>
+                        <th scope="col">Tanggal Bimbingan</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Aksi</th>
+                        @if (auth()->user()->level_id !== 1)
+                            <th scope="col">Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($logbooks as $logbook)
-                        <tr class="text-center">
-                            <th scope="row">{{ $loop->iteration }}</th>
-                            <td>{{ $logbook->user->nama }}</td>
-                            <td>{{ $logbook->judul->judul }}</td>
-                            <td>{{ $logbook->description }}</td>
-                            <td>
-                                <p
-                                    class="bg-{{ $logbook->status == 'diterima' ? 'success' : ($logbook->status == 'ditolak' ? 'danger' : 'warning') }} rounded text-white">
+                    @if (count($logbooks) !== 0)
+                        @foreach ($logbooks as $logbook)
+                            <tr class="text-center">
+                                <th scope="row">{{ $loop->iteration }}</th>
+                                @if (auth()->user()->level_id !== 1)
+                                    <td>{{ $logbook->user->nama }}</td>
+                                @endif
+                                <td>{{ $logbook->judul->judul }}</td>
+                                <td>{{ $logbook->description }}</td>
+                                <td>
+                                    {{ $logbook->created_at->day }}/{{ $logbook->created_at->month }}/{{ $logbook->created_at->year }}
+                                </td>
+                                <td>
+                                    <p
+                                        class="px-1 bg-{{ $logbook->status == 'diterima' ? 'success' : ($logbook->status == 'ditolak' ? 'danger' : 'warning') }} rounded text-white">
+                                        {{ $logbook->status }}
+                                    </p>
+                                </td>
+                                @if (auth()->user()->level_id !== 1)
+                                    <td>
+                                        <!-- Example single danger button -->
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-dark"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-list"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                        data-bs-target="#JudulView" data-id="{{ $logbook->id }}"><i
+                                                            class="bi bi-search text-info"></i>
+                                                        Show</button>
+                                                </li>
 
-                                    {{ $logbook->status }}
-                                </p>
-                            </td>
-                            <td>
-                                <!-- Example single danger button -->
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-dark" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
-                                        <i class="bi bi-list"></i>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                                data-bs-target="#JudulView" data-id="{{ $logbook->id }}"><i
-                                                    class="bi bi-search text-info"></i>
-                                                Show</button>
-                                        </li>
+                                                <li><a class="dropdown-item" href="/logbook/{{ $logbook->id }}/edit"><i
+                                                            class="bi bi-pencil-square text-warning"></i>
+                                                        Update
+                                                    </a></li>
 
-                                        <li><a class="dropdown-item" href="/logbook/{{ $logbook->id }}/edit"><i
-                                                    class="bi bi-pencil-square text-warning"></i>
-                                                Update
-                                            </a></li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
 
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
+                                                <li>
+                                                    <form action="/logbook/{{ $logbook->id }}" method="POST">
+                                                        @method('delete')
+                                                        @csrf
+                                                        <button type="submit" class="dropdown-item"
+                                                            onclick="return confirm('Yakin ingin menghapus data ini?')"><i
+                                                                class="bi bi-trash-fill text-danger"></i>
+                                                            Delete</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
 
-                                        <li>
-                                            <form action="/logbook/{{ $logbook->id }}" method="POST">
-                                                @method('delete')
-                                                @csrf
-                                                <button type="submit" class="dropdown-item"
-                                                    onclick="return confirm('Yakin ingin menghapus data ini?')"><i
-                                                        class="bi bi-trash-fill text-danger"></i>
-                                                    Delete</button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                            </td>
+                                    </td>
+                                @endif
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="6" class="text-center">No Data</td>
                         </tr>
-                    @endforeach
+                    @endif
                 </tbody>
             </table>
-
+            {{-- ajukan presentasi --}}
+            @if (auth()->user()->level_id == 1 && count($status) >= 2)
+                <a href="/presentasi" class="btn btn-sm btn-primary"><i class="bi bi-box-arrow-in-right"></i> Ajukan
+                    Presentasi </a>
+            @endif
         </div>
 
         <!-- Modal show -->

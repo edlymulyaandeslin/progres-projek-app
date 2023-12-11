@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Logbook;
-use App\Http\Requests\StoreLogbookRequest;
-use App\Http\Requests\UpdateLogbookRequest;
 use App\Models\Judulprojek;
 use Illuminate\Http\Request;
 
@@ -15,8 +14,27 @@ class LogbookController extends Controller
      */
     public function index()
     {
+        // admin
+        if (auth()->user()->level_id === 4) {
+            return view('logbook.index', [
+                'logbooks' => Logbook::all()
+            ]);
+        }
+
+        // mentor
+        if (auth()->user()->level_id === 2) {
+            return view('logbook.index', [
+                'logbooks' => Logbook::all()
+            ]);
+        }
+
+        // users / mahasiswa
+        $logbooks = Logbook::where('user_id', auth()->user()->id)->get();
+        $logbookStatus = $logbooks->where('status', 'diterima');
+
         return view('logbook.index', [
-            'logbooks' => Logbook::all(),
+            'logbooks' => $logbooks,
+            'status' => $logbookStatus
         ]);
     }
 
@@ -27,7 +45,7 @@ class LogbookController extends Controller
     {
 
         return view('logbook.create', [
-            'juduls' => Judulprojek::all()
+            'juduls' => Judulprojek::where('user_id', auth()->user()->id)->get()
         ]);
     }
 
@@ -39,12 +57,14 @@ class LogbookController extends Controller
         $validateData = $request->validate([
             'judul_id' => 'required',
             'description' => 'required',
+            'status' => 'string'
         ]);
-        $validateData['user_id'] = 1;
+
+        $validateData['user_id'] = auth()->user()->id;
 
         Logbook::create($validateData);
 
-        return redirect('/logbook')->with('success', 'Log book berhasil ditambahkan');
+        return redirect('/logbook')->with('success', 'Log book berhasil dibuat');
     }
 
     /**
@@ -60,8 +80,6 @@ class LogbookController extends Controller
      */
     public function edit($id)
     {
-
-
         return view('logbook.edit', [
             'logbook' =>  Logbook::find($id)
         ]);
@@ -77,11 +95,10 @@ class LogbookController extends Controller
             'description' => 'required',
             'status' => 'string'
         ]);
-        $validateData['user_id'] = 1;
 
         Logbook::where('id', $id)->update($validateData);
 
-        return redirect('/logbook')->with('success', 'Log book berhasil diubah');
+        return redirect('/logbook')->with('success', 'Log book berhasil diupdate');
     }
 
     /**

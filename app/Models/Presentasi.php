@@ -11,14 +11,18 @@ class Presentasi extends Model
 {
     use HasFactory;
 
+
     protected $guarded = ['id'];
 
+    protected $dates = [
+        'tanggal'
+    ];
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function judulprojek()
+    public function judul()
     {
         return $this->belongsTo(Judulprojek::class);
     }
