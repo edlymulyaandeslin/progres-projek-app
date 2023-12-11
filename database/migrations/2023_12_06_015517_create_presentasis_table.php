@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('judul_id');
-            $table->string('jadwal')->nullable();
-            $table->string('status')->default('verivikasi');
+            $table->string('tanggal')->default('');
+            $table->string('jam')->default('');
+            $table->string('status')->default('diajukan');
             $table->timestamps();
         });
     }

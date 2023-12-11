@@ -43,15 +43,15 @@
             @include('layouts.partials.sidebar')
 
             <!-- Content Start -->
-            <div class="content">
+            <div class="content h-100">
 
                 @include('layouts.partials.navbar')
 
-                <div class="container-fluid pt-4 px-4">
+                <div class="container-fluid pt-4 px-4 ">
                     @yield('content')
                 </div>
 
-                <div class="container-fluid pt-4 px-4">
+                <div class="container-fluid pt-4 px-4 ">
                     @include('layouts.partials.footer')
                 </div>
             </div>

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreignId('judul_id');
             $table->text('description');
-            $table->string('status')->default('verivikasi');
+            $table->string('status')->default('diajukan');
             $table->timestamps();
         });
     }

@@ -36,7 +36,7 @@
                     <label for="status" class="form-label">Status</label>
                     <select class="form-select form-select-sm mb-3" name="status" id="status"
                         aria-label=".form-select-sm example">
-                        <option selected disabled>Pilih Status</option>
+                        <option selected disabled>Diajukan</option>
                         @if ($judulprojek->status == 'diterima')
                             <option value="diterima" selected>Diterima</option>
                             <option value="ditolak">Ditolak</option>

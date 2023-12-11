@@ -12,6 +12,7 @@ class Logbook extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+    protected $with = ['user', 'judul'];
 
     public function user()
     {

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Judulprojek;
 use App\Http\Requests\StoreJudulprojekRequest;
 use App\Http\Requests\UpdateJudulprojekRequest;
+use App\Models\Logbook;
+use App\Models\Presentasi;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -15,9 +17,15 @@ class JudulprojekController extends Controller
      */
     public function index()
     {
-        $judulprojeks = Judulprojek::all();
+
+        if (auth()->user()->level_id === 4 || auth()->user()->level_id === 3) {
+            return view('judulprojek.index', [
+                'judulprojeks' => Judulprojek::all()
+            ]);
+        }
+
         return view('judulprojek.index', [
-            'judulprojeks' => $judulprojeks
+            'judulprojeks' => Judulprojek::where('user_id', auth()->user()->id)->get()
         ]);
     }
 
@@ -43,11 +51,11 @@ class JudulprojekController extends Controller
             'status' => 'string'
         ]);
 
-        $validateData['user_id'] = 1;
+        $validateData['user_id'] = auth()->user()->id;
 
         Judulprojek::create($validateData);
 
-        return redirect('/judulprojek')->with('success', 'Data Berhasil Ditambahkan');
+        return redirect('/judulprojek')->with('success', 'Judul Berhasil Diajukan, mohon menunggu acc koordinator');
 
         // dd('nice');
     }
@@ -57,9 +65,7 @@ class JudulprojekController extends Controller
      */
     public function show($id)
     {
-        $judulprojek = Judulprojek::find($id);
-
-        return response()->json($judulprojek);
+        // 
     }
 
     /**
@@ -68,11 +74,11 @@ class JudulprojekController extends Controller
     public function edit($id)
     {
         $judulprojek = Judulprojek::find($id);
-        $dataUser = User::where('level_id', 2)->get();
+        $dataPembimbing = User::where('level_id', 2)->get();
 
         return view('judulprojek.edit', [
             'judulprojek' => $judulprojek,
-            'users' => $dataUser,
+            'users' => $dataPembimbing,
         ]);
     }
 
@@ -90,7 +96,7 @@ class JudulprojekController extends Controller
 
         Judulprojek::where('id', $id)->update($validateData);
 
-        return redirect('/judulprojek')->with('success', 'Data Berhasil Diubah');
+        return redirect('/judulprojek')->with('success', 'Judul Berhasil Diupdate');
     }
 
     /**
@@ -100,6 +106,10 @@ class JudulprojekController extends Controller
     {
         Judulprojek::destroy($id);
 
-        return redirect('/judulprojek')->with('success', 'Data berhasil dihapus');
+        Logbook::where('judul_id', $id)->delete();
+
+        Presentasi::where('judul_id', $id)->delete();
+
+        return redirect('/judulprojek')->with('success', 'Judul berhasil dihapus');
     }
 }
