@@ -15,6 +15,13 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
+
+        // if(auth()->user()->level_id == 2){
+        //     return view('mahasiswa.index', [
+        //         'mahasiswas' => User::where('level_id', 1)->where('id', auth()->user()->id)->get()
+        //     ]);
+        // }
+
         return view('mahasiswa.index', [
             'mahasiswas' => User::where('level_id', 1)->get()
         ]);
