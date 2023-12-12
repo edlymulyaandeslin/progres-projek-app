@@ -28,6 +28,7 @@ class AuthController extends Controller
             'jenis_kelamin' =>  'required',
             'pekerjaan' => 'required|min:5',
         ]);
+        $validateData['password'] = bcrypt($validateData['password']);
 
         $validateData['level_id'] = 1;
 

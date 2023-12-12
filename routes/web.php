@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LogbookController;
+use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\PembimbingController;
 use App\Http\Controllers\PresentasiController;
 use App\Http\Controllers\JudulprojekController;
 
@@ -30,6 +32,12 @@ Route::resource('/logbook', LogbookController::class)->middleware('auth');
 
 // route presentasi
 Route::resource('/presentasi', PresentasiController::class)->middleware('auth');
+
+// route pembimbing
+Route::resource('/pembimbing', PembimbingController::class)->middleware('auth');
+
+// route mahasiswa
+Route::resource('/mahasiswa', MahasiswaController::class)->middleware('auth');
 
 // authenticate register dan login
 Route::prefix('auth')->group(function () {
