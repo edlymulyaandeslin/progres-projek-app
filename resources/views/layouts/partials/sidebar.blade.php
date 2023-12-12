@@ -22,6 +22,18 @@
                         <a href="/" class="nav-item nav-link {{ Request::is('/*') ? 'active' : '' }}"><i
                                 class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
 
+                        @if (auth()->user()->level_id == 4 || auth()->user()->level_id == 2)
+                            <a href="/mahasiswa"
+                                class="nav-item nav-link {{ Request::is('mahasiswa*') ? 'active' : '' }}"><i
+                                    class="fa fa-user-friends me-2"></i>Mahasiswa</a>
+                        @endif
+
+                        @if (auth()->user()->level_id == 4 || auth()->user()->level_id == 3)
+                            <a href="/pembimbing"
+                                class="nav-item nav-link {{ Request::is('pembimbing*') ? 'active' : '' }}"><i
+                                    class="fa fa-user-tie me-2"></i>Pembimbing</a>
+                        @endif
+
                         @if (auth()->user()->level_id !== 2)
                             <a href="/judulprojek"
                                 class="nav-item nav-link {{ Request::is('judulprojek*') ? 'active' : '' }}"><i
