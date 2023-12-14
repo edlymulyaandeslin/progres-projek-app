@@ -2,7 +2,7 @@
 @section('content')
     <div class="col-sm-12 col-xl-12">
         <div class="bg-light rounded h-100 p-4">
-            <h4 class="mb-4">Update Data Mahasiswa</h4>
+            <h4 class="mb-4 text-center">UPDATE DATA MAHASISWA</h4>
 
             <form action="/mahasiswa/{{ $mahasiswa->id }}" method="post">
                 @method('put')
@@ -177,8 +177,65 @@
                             @enderror
                         </div>
                     </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <h3 class="text-center">JADWAL MAGANG</h3>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
+                            <input type="date" class="form-control  @error('tanggal_mulai') is-invalid @enderror"
+                                name="tanggal_mulai" id="tanggal_mulai"
+                                value="{{ old('tanggal_mulai', $mahasiswa->tanggal_mulai) }}">
+                            @error('tanggal_mulai')
+                                <p class="text-danger">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="tanggal_selesai" class="form-label">Tanggal Selesai</label>
+                            <input type="date" class="form-control  @error('tanggal_selesai') is-invalid @enderror"
+                                name="tanggal_selesai" id="tanggal_selesai"
+                                value="{{ old('tanggal_selesai', $mahasiswa->tanggal_selesai) }}">
+                            @error('tanggal_selesai')
+                                <p class="text-danger">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select name="status" class="form-control @error('status') is-invalid @enderror"
+                                id="status">
+                                <option value="active" selected>Active</option>
+                                @if (old('status', $mahasiswa->status) == 'selesai')
+                                    <option value="selesai" selected>Selesai</option>
+                                    <option value="tidak selesai">Tidak Selesai</option>
+                                @elseif (old('status', $mahasiswa->status) == 'tidak selesai')
+                                    <option value="selesai">Selesai</option>
+                                    <option value="tidak selesai" selected>Tidak Selesai</option>
+                                @else
+                                    <option value="selesai">Selesai</option>
+                                    <option value="tidak selesai">Tidak Selesai</option>
+                                @endif
+                            </select>
+                            @error('status')
+                                <p class="text-danger">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+                    </div>
 
                     <button type="submit" class="btn btn-primary">Update</button>
+
                 </div>
 
             </form>

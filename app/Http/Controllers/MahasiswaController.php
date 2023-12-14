@@ -7,6 +7,7 @@ use App\Models\Logbook;
 use App\Models\Presentasi;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MahasiswaController extends Controller
 {
@@ -16,11 +17,18 @@ class MahasiswaController extends Controller
     public function index()
     {
 
-        // if(auth()->user()->level_id == 2){
-        //     return view('mahasiswa.index', [
-        //         'mahasiswas' => User::where('level_id', 1)->where('id', auth()->user()->id)->get()
-        //     ]);
-        // }
+        if (auth()->user()->level_id == 2) {
+            $user = DB::table('users')
+                ->join('judulprojeks', 'judulprojeks.user_id', 'users.id')
+                ->select('users.*', 'judulprojeks.pembimbing')
+                ->get();
+
+            $user = $user->where('pembimbing', auth()->user()->nama);
+
+            return view('mahasiswa.index', [
+                'mahasiswas' => $user
+            ]);
+        }
 
         return view('mahasiswa.index', [
             'mahasiswas' => User::where('level_id', 1)->get()
@@ -64,9 +72,11 @@ class MahasiswaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show($id)
     {
-        //
+        $mahasiswa = User::find($id);
+
+        return response()->json($mahasiswa);
     }
 
     /**
@@ -93,6 +103,9 @@ class MahasiswaController extends Controller
             'agama' => 'required',
             'jenis_kelamin' =>  'required',
             'pekerjaan' => 'required|min:5',
+            'tanggal_mulai' => 'required',
+            'tanggal_selesai' => 'required',
+            'status' => 'required'
         ];
 
         if ($request->input('password')) {

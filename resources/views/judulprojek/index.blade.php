@@ -12,7 +12,7 @@
                 </div>
             @endif
 
-            @if (auth()->user()->level_id === 1 || auth()->user()->level_id === 4)
+            @if (auth()->user()->level_id === 1)
                 <div class="text-end mb-2">
                     <a href="/judulprojek/create" class="btn btn-sm btn-outline-primary ">Tambah <i
                             class="fa fa-plus"></i></a>
@@ -29,9 +29,7 @@
                         <th scope="col">Judul</th>
                         <th scope="col">Pembimbing</th>
                         <th scope="col">Status</th>
-                        @if (auth()->user()->level_id === 3 || auth()->user()->level_id === 4)
-                            <th scope="col">Aksi</th>
-                        @endif
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,7 +51,7 @@
                                         {{ $judulprojek->status }}
                                     </p>
                                 </td>
-                                @if (auth()->user()->level_id === 3 || auth()->user()->level_id === 4)
+                                @if (auth()->user()->level_id === 3)
                                     <td>
                                         <!-- Example single danger button -->
                                         <div class="btn-group">
@@ -63,10 +61,10 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#JudulView" data-id="{{ $judulprojek->id }}"><i
-                                                            class="bi bi-search text-info"></i>
-                                                        Show</button>
+                                                    <a href="javascript:void(0)" id="show-judulprojek"
+                                                        data-url="{{ route('judulprojek.show', $judulprojek->id) }}"
+                                                        class="dropdown-item"><i class="bi bi-search text-info"></i>
+                                                        Show</a>
                                                 </li>
 
                                                 <li><a class="dropdown-item"
@@ -93,6 +91,12 @@
                                         </div>
 
                                     </td>
+                                @else
+                                    <td>
+                                        <a href="javascript:void(0)" id="show-judulprojek"
+                                            data-url="{{ route('judulprojek.show', $judulprojek->id) }}"
+                                            class="btn btn-sm btn-outline-primary"><i class="bi bi-eye-fill "></i></a>
+                                    </td>
                                 @endif
                             </tr>
                         @endforeach
@@ -104,73 +108,68 @@
 
                 </tbody>
             </table>
-
         </div>
+    </div>
 
-        <!-- Modal show -->
-        <div class="modal fade" id="JudulView" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Details</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="judul" class="form-label">Judul</label>
-                                    <input type="text" id="judul" class="form-control" disabled>
-                                </div>
+    <!-- Modal show -->
+    <div class="modal fade" id="judulView" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="mahasiswa" class="form-label">Nama Mahasiswa</label>
+                                <input type="text" id="mahasiswa" class="form-control" disabled>
                             </div>
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="pembimbing" class="form-label">Pembimbing</label>
-                                    <input type="text" id="pembimbing" class="form-control" disabled>
-                                </div>
 
-                                <div class="mb-3">
-                                    <label for="status" class="form-label">Status</label>
-                                    <input type="text" id="status" class="form-control" disabled>
-                                    {{-- value="{{ $judul->status === 1 ? 'Disetujui' : 'Belum disetujui' }}"> --}}
-                                </div>
+                            <div class="mb-3">
+                                <label for="pembimbing" class="form-label">Pembimbing</label>
+                                <input type="text" id="pembimbing" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="judul" class="form-label">Judul</label>
+                                <input type="text" id="judul" class="form-control" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <input type="text" id="status" class="form-control" disabled>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-
     </div>
+
 @endsection
 
-<!-- resources/views/data/index.blade.php -->
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $('body').on('click', '#show-judulprojek', function() {
 
-<!-- Tambahkan ini di bagian bawah file blade template -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
-    // $(document).ready(function() {
-    //     $('#JudulView').on('show.bs.modal', function(e) {
-    //         var dataId = $(e.relatedTarget).data('id');
+                let judulUrl = $(this).data('url');
+                $.get(judulUrl, function(data) {
+                    $('#judulView').modal('show');
+                    $('#judul').val(data.judul);
+                    data.pembimbing !== '' ? $('#pembimbing').val(data.pembimbing) : $(
+                        '#pembimbing').val('-');
+                    $('#status').val(data.status);
+                    $('#mahasiswa').val(data.nama);
 
-    //         // Lakukan AJAX request ke server
-    //         $.ajax({
-    //             url: '/judulprojek/' + dataId,
-    //             type: 'GET',
-    //             dataType: 'json',
-    //             success: function(data) {
-    //                 // Setel data ke dalam modal
-    //                 $('#modalTitle').text(data.judul);
-    //                 $('#modalDescription').text(data.deskripsi);
-    //             },
-    //             error: function(error) {
-    //                 console.log(error);
-    //             }
-    //         });
-    //     });
-    // });
-</script>
+                })
+            })
+        })
+    </script>
+@endsection

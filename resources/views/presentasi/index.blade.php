@@ -12,14 +12,9 @@
                 </div>
             @endif
 
-            @if (count($status) >= 2 || auth()->user()->level_id == 4)
+            @if (count($status) >= 2 && auth()->user()->level_id === 1)
                 <div class="text-end mb-2">
-                    <a href="/presentasi/create" class="btn btn-sm btn-outline-primary ">Tambah <i
-                            class="fa fa-plus"></i></a>
-                </div>
-            @else
-                <div class="text-end mb-2">
-                    <a href="/presentasi/create" class="btn btn-sm btn-outline-dark disabled">Tambah <i
+                    <a href="/presentasi/create" class="btn btn-sm btn-outline-primary ">Ajukan Presentasi <i
                             class="fa fa-plus"></i></a>
                 </div>
             @endif
@@ -29,15 +24,11 @@
                     <tr class="text-center">
                         <th scope="col">No</th>
                         @if (auth()->user()->level_id !== 1)
-                            <th scope="col">Ketua Projek</th>
+                            <th scope="col">Ketua Tim</th>
                         @endif
                         <th scope="col">Judul</th>
-                        <th scope="col">Tanggal</th>
-                        <th scope="col">Jam</th>
                         <th scope="col">Status</th>
-                        @if (auth()->user()->level_id !== 1)
-                            <th scope="col">Aksi</th>
-                        @endif
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,19 +36,25 @@
                         @foreach ($presents as $present)
                             <tr class="text-center">
                                 <th scope="row">{{ $loop->iteration }}</th>
-                                @if (auth()->user()->level_id !== 1)
+
+                                @if (auth()->user()->level_id === 2)
+                                    <td>{{ $present->nama }}</td>
+                                @elseif (auth()->user()->level_id !== 1)
                                     <td>{{ $present->user->nama }}</td>
                                 @endif
-                                <td>{{ $present->judul->judul }}</td>
-                                <td>{{ $present->tanggal ? $present->tanggal : '-' }}</td>
-                                <td>{{ $present->jam ? $present->jam . ' WIB' : '-' }}</td>
+
+                                @if (auth()->user()->level_id == 2)
+                                    <td>{{ $present->judul }}</td>
+                                @else
+                                    <td>{{ $present->judul->judul }}</td>
+                                @endif
                                 <td>
                                     <p
                                         class="px-1 bg-{{ $present->status == 'diterima' ? 'success' : ($present->status == 'ditolak' ? 'danger' : 'warning') }} rounded text-white">
                                         {{ $present->status }}
                                     </p>
                                 </td>
-                                @if (auth()->user()->level_id !== 1)
+                                @if (auth()->user()->level_id === 3 || auth()->user()->level_id === 2)
                                     <td>
                                         <!-- Example single danger button -->
                                         <div class="btn-group">
@@ -68,17 +65,16 @@
                                             <ul class="dropdown-menu">
 
                                                 <li>
-                                                    <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#JudulView" data-id="{{ $present->id }}"><i
-                                                            class="bi bi-search text-info"></i>
-                                                        Show</button>
+                                                    <a href="javascript:void(0)" id="show-presentasi"
+                                                        data-url="{{ route('presentasi.show', $present->id) }}"
+                                                        class="dropdown-item"><i class="bi bi-search text-info"></i>
+                                                        Show</a>
                                                 </li>
 
                                                 <li><a class="dropdown-item" href="/presentasi/{{ $present->id }}/edit"><i
                                                             class="bi bi-pencil-square text-warning"></i>
                                                         Update
                                                     </a></li>
-
                                                 <li>
                                                     <hr class="dropdown-divider">
                                                 </li>
@@ -95,7 +91,15 @@
                                                 </li>
                                             </ul>
                                         </div>
+                                    </td>
+                                @endif
 
+                                @if (auth()->user()->level_id == 1 || auth()->user()->level_id == 4)
+                                    <td>
+                                        <a href="javascript:void(0)" id="show-presentasi"
+                                            data-url="{{ route('presentasi.show', $present->id) }}"
+                                            class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye-fill"></i></a>
                                     </td>
                                 @endif
                             </tr>
@@ -105,41 +109,46 @@
                             <td colspan="6" class="text-center">No Data</td>
                         </tr>
                     @endif
-
                 </tbody>
             </table>
 
         </div>
 
         <!-- Modal show -->
-        <div class="modal fade" id="JudulView" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        <div class="modal fade" id="presentView" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Details</h1>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Congratulations Presentasi Anda Diterima
+                            <i class="bi bi-star-fill text-warning"></i>
+                        </h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="judul" class="form-label">Judul</label>
-                                    <input type="text" id="judul" class="form-control" disabled>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="pembimbing" class="form-label">Pembimbing</label>
-                                    <input type="text" id="pembimbing" class="form-control" disabled>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="status" class="form-label">Status</label>
-                                    <input type="text" id="status" class="form-control" disabled>
-                                    {{-- value="{{ $judul->status === 1 ? 'Disetujui' : 'Belum disetujui' }}"> --}}
-                                </div>
-                            </div>
+                            <p>
+                                Jadwal Presentasi Anda
+                            </p>
+                            <table class="mx-2">
+                                <tbody>
+                                    <tr>
+                                        <th>Ketua Tim</th>
+                                        <td>:</td>
+                                        <td id="ketua"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <td>:</td>
+                                        <td id="tanggal"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Jam</th>
+                                        <td>:</td>
+                                        <td id="jam"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -152,29 +161,43 @@
     </div>
 @endsection
 
-<!-- resources/views/data/index.blade.php -->
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $('body').on('click', '#show-presentasi', function() {
 
-<!-- Tambahkan ini di bagian bawah file blade template -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
-    // $(document).ready(function() {
-    //     $('#JudulView').on('show.bs.modal', function(e) {
-    //         var dataId = $(e.relatedTarget).data('id');
+                let judulUrl = $(this).data('url');
 
-    //         // Lakukan AJAX request ke server
-    //         $.ajax({
-    //             url: '/judulprojek/' + dataId,
-    //             type: 'GET',
-    //             dataType: 'json',
-    //             success: function(data) {
-    //                 // Setel data ke dalam modal
-    //                 $('#modalTitle').text(data.judul);
-    //                 $('#modalDescription').text(data.deskripsi);
-    //             },
-    //             error: function(error) {
-    //                 console.log(error);
-    //             }
-    //         });
-    //     });
-    // });
-</script>
+                $.get(judulUrl, function(data) {
+                    $('#presentView').modal('show');
+
+                    if (data.status !== 'diterima') {
+                        $('.modal-title').text('Presentasi Anda belum diterima');
+                        $('.modal-body').html(
+                            "<p class='text-center'>Tidak Ada Jadwal Presentasi</p>");
+                    }
+
+                    // format tanggal
+                    let dateFromDatabase = new Date(data.tanggal);
+
+                    function formatTanggal(date) {
+                        let options = {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        };
+                        return date.toLocaleDateString('id-ID',
+                            options); // Sesuaikan dengan preferensi lokal Anda
+                    }
+                    let formattedDate = formatTanggal(dateFromDatabase);
+
+                    $('#ketua').text(data.nama);
+                    $('#tanggal').text(formattedDate);
+                    $('#jam').text(data.jam + ' WIB');
+
+
+                })
+            })
+        })
+    </script>
+@endsection

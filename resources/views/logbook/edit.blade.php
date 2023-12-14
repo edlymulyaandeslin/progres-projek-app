@@ -3,7 +3,7 @@
     <div class="col-sm-12 col-xl-6">
         <div class="bg-light rounded h-100 p-4">
             <h4 class="mb-4">Update Log book</h4>
-
+            {{-- {{ $logbook }} --}}
             <form action="/logbook/{{ $logbook->id }}" method="POST">
                 @method('put')
                 @csrf

@@ -12,7 +12,7 @@
                 </div>
             @endif
 
-            @if (auth()->user()->level_id === 1 || auth()->user()->level_id === 4)
+            @if (auth()->user()->level_id === 1)
                 <div class="text-end mb-2">
                     <a href="/logbook/create" class="btn btn-sm btn-outline-primary ">Tambah <i class="fa fa-plus"></i></a>
                 </div>
@@ -29,7 +29,7 @@
                         <th scope="col">Description</th>
                         <th scope="col">Tanggal Bimbingan</th>
                         <th scope="col">Status</th>
-                        @if (auth()->user()->level_id !== 1)
+                        @if (auth()->user()->level_id === 2)
                             <th scope="col">Aksi</th>
                         @endif
                     </tr>
@@ -38,22 +38,37 @@
                     @if (count($logbooks) !== 0)
                         @foreach ($logbooks as $logbook)
                             <tr class="text-center">
+
                                 <th scope="row">{{ $loop->iteration }}</th>
                                 @if (auth()->user()->level_id !== 1)
-                                    <td>{{ $logbook->user->nama }}</td>
+                                    <td>{{ $logbook->nama }}</td>
                                 @endif
-                                <td>{{ $logbook->judul->judul }}</td>
+                                @if (auth()->user()->level_id === 1)
+                                    <td>{{ $logbook->judul->judul }}</td>
+                                @else
+                                    <td>{{ $logbook->judul }}</td>
+                                @endif
+
                                 <td>{{ $logbook->description }}</td>
-                                <td>
-                                    {{ $logbook->created_at->day }}/{{ $logbook->created_at->month }}/{{ $logbook->created_at->year }}
-                                </td>
+
+                                @if (auth()->user()->level_id === 1)
+                                    <td>
+                                        {{ $logbook->created_at->day }}-{{ $logbook->created_at->month }}-{{ $logbook->created_at->year }}
+                                    </td>
+                                @else
+                                    <td>
+                                        {{ $logbook->created_at }}
+                                    </td>
+                                @endif
+
                                 <td>
                                     <p
                                         class="px-1 bg-{{ $logbook->status == 'diterima' ? 'success' : ($logbook->status == 'ditolak' ? 'danger' : 'warning') }} rounded text-white">
                                         {{ $logbook->status }}
                                     </p>
                                 </td>
-                                @if (auth()->user()->level_id !== 1)
+
+                                @if (auth()->user()->level_id === 2)
                                     <td>
                                         <!-- Example single danger button -->
                                         <div class="btn-group">
@@ -63,10 +78,10 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#JudulView" data-id="{{ $logbook->id }}"><i
-                                                            class="bi bi-search text-info"></i>
-                                                        Show</button>
+                                                    <a href="javascript:void(0)" id="show-logbook"
+                                                        data-url="{{ route('logbook.show', $logbook->id) }}"
+                                                        class="dropdown-item"><i class="bi bi-search text-info"></i>
+                                                        Show</a>
                                                 </li>
 
                                                 <li><a class="dropdown-item" href="/logbook/{{ $logbook->id }}/edit"><i
@@ -90,7 +105,6 @@
                                                 </li>
                                             </ul>
                                         </div>
-
                                     </td>
                                 @endif
                             </tr>
@@ -110,7 +124,7 @@
         </div>
 
         <!-- Modal show -->
-        <div class="modal fade" id="JudulView" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        <div class="modal fade" id="logbookView" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -125,17 +139,20 @@
                                     <label for="judul" class="form-label">Judul</label>
                                     <input type="text" id="judul" class="form-control" disabled>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Deskripsi</label>
+                                    <textarea id="description" class="form-control" rows="4" disabled style="resize: none"></textarea>
+                                </div>
                             </div>
+
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="pembimbing" class="form-label">Pembimbing</label>
-                                    <input type="text" id="pembimbing" class="form-control" disabled>
+                                    <label for="tanggal" class="form-label">Tanggal Bimbingan</label>
+                                    <input type="text" id="tanggal" class="form-control" disabled>
                                 </div>
-
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label>
                                     <input type="text" id="status" class="form-control" disabled>
-                                    {{-- value="{{ $judul->status === 1 ? 'Disetujui' : 'Belum disetujui' }}"> --}}
                                 </div>
                             </div>
                         </div>
@@ -150,29 +167,37 @@
     </div>
 @endsection
 
-<!-- resources/views/data/index.blade.php -->
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $('body').on('click', '#show-logbook', function() {
 
-<!-- Tambahkan ini di bagian bawah file blade template -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
-    // $(document).ready(function() {
-    //     $('#JudulView').on('show.bs.modal', function(e) {
-    //         var dataId = $(e.relatedTarget).data('id');
+                let judulUrl = $(this).data('url');
 
-    //         // Lakukan AJAX request ke server
-    //         $.ajax({
-    //             url: '/judulprojek/' + dataId,
-    //             type: 'GET',
-    //             dataType: 'json',
-    //             success: function(data) {
-    //                 // Setel data ke dalam modal
-    //                 $('#modalTitle').text(data.judul);
-    //                 $('#modalDescription').text(data.deskripsi);
-    //             },
-    //             error: function(error) {
-    //                 console.log(error);
-    //             }
-    //         });
-    //     });
-    // });
-</script>
+                $.get(judulUrl, function(data) {
+                    $('#logbookView').modal('show');
+
+                    // format tanggal
+                    let dateFromDatabase = new Date(data.created_at);
+
+                    function formatTanggal(date) {
+                        let options = {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        };
+                        return date.toLocaleDateString('id-ID',
+                            options); // Sesuaikan dengan preferensi lokal Anda
+                    }
+                    let formattedDate = formatTanggal(dateFromDatabase);
+
+                    $('#judul').val(data.judul);
+                    $('#tanggal').val(formattedDate);
+                    $('#description').val(data.description);
+                    $('#status').val(data.status);
+
+                })
+            })
+        })
+    </script>
+@endsection

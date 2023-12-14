@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'tempat_lahir' => fake()->city(),
             'tanggal_lahir' => fake()->date(),
             'alamat' => fake()->address(),
-            'agama' => 'Islam',
+            'agama' => 'islam',
             'jenis_kelamin' => fake()->randomElement(['laki-laki', 'perempuan']),
             'pekerjaan' => fake()->jobTitle(),
             'email_verified_at' => now(),

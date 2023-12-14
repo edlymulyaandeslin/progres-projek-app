@@ -22,35 +22,43 @@
                         <a href="/" class="nav-item nav-link {{ Request::is('/*') ? 'active' : '' }}"><i
                                 class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
 
-                        @if (auth()->user()->level_id == 4 || auth()->user()->level_id == 2)
+                        @if (auth()->user()->level_id === 4 || auth()->user()->level_id === 2)
                             <a href="/mahasiswa"
                                 class="nav-item nav-link {{ Request::is('mahasiswa*') ? 'active' : '' }}"><i
                                     class="fa fa-user-friends me-2"></i>Mahasiswa</a>
                         @endif
 
-                        @if (auth()->user()->level_id == 4 || auth()->user()->level_id == 3)
+                        @if (auth()->user()->level_id === 4 || auth()->user()->level_id === 3)
                             <a href="/pembimbing"
                                 class="nav-item nav-link {{ Request::is('pembimbing*') ? 'active' : '' }}"><i
                                     class="fa fa-user-tie me-2"></i>Pembimbing</a>
                         @endif
 
-                        @if (auth()->user()->level_id !== 2)
+                        @if (auth()->user()->level_id === 4)
+                            <a href="/koordinator"
+                                class="nav-item nav-link {{ Request::is('koordinator*') ? 'active' : '' }}"><i
+                                    class="fa fa-user-shield me-2"></i>Koordinator</a>
+                        @endif
+
+                        @if (auth()->user()->level_id !== 4)
                             <a href="/judulprojek"
                                 class="nav-item nav-link {{ Request::is('judulprojek*') ? 'active' : '' }}"><i
                                     class="fa fa-keyboard me-2"></i>Pengajuan
                                 Judul</a>
                         @endif
 
-                        @if (auth()->user()->level_id !== 3)
+                        @if (auth()->user()->level_id === 1 || auth()->user()->level_id === 2)
                             <a href="/logbook"
                                 class="nav-item nav-link {{ Request::is('logbook*') ? 'active' : '' }}"><i
                                     class="fa fa-address-book me-2"></i>Log
                                 Book</a>
                         @endif
 
-                        <a href="/presentasi"
-                            class="nav-item nav-link {{ Request::is('presentasi*') ? 'active' : '' }}"><i
-                                class="fa fa-address-card me-2"></i>Presentasi</a>
+                        @if (auth()->user()->level_id !== 4)
+                            <a href="/presentasi"
+                                class="nav-item nav-link {{ Request::is('presentasi*') ? 'active' : '' }}"><i
+                                    class="fa fa-address-card me-2"></i>Presentasi</a>
+                        @endif
 
                     </div>
                 </nav>

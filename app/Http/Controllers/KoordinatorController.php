@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Level;
 use App\Models\User;
+use App\Models\Level;
 use Illuminate\Http\Request;
 
-class PembimbingController extends Controller
+class KoordinatorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('pembimbing.index', [
-            'pembimbings' => User::where('level_id', 2)->get()
+        return view('koordinator.index', [
+            'koordinators' => User::where('level_id', 3)->get()
         ]);
     }
 
@@ -24,7 +24,7 @@ class PembimbingController extends Controller
     public function create()
     {
 
-        return view('pembimbing.create', [
+        return view('koordinator.create', [
             'levels' => Level::all()
         ]);
     }
@@ -49,7 +49,7 @@ class PembimbingController extends Controller
 
         User::create($validateData);
 
-        return redirect('/pembimbing')->with('success', 'Pembimbing berhasil ditambahkan');
+        return redirect('/koordinator')->with('success', 'Koordinator berhasil ditambahkan');
     }
 
     /**
@@ -57,9 +57,9 @@ class PembimbingController extends Controller
      */
     public function show($id)
     {
-        $pembimbing = User::find($id);
+        $koordinator = User::find($id);
 
-        return response()->json($pembimbing);
+        return response()->json($koordinator);
     }
 
     /**
@@ -67,8 +67,8 @@ class PembimbingController extends Controller
      */
     public function edit($id)
     {
-        return view('pembimbing.edit', [
-            'pembimbing' => User::find($id),
+        return view('koordinator.edit', [
+            'koordinator' => User::find($id),
             'levels' => Level::all()
         ]);
     }
@@ -102,7 +102,7 @@ class PembimbingController extends Controller
 
         User::where('id', $id)->update($validateData);
 
-        return redirect('/pembimbing')->with('success', 'Pembimbing berhasil diupdate');
+        return redirect('/koordinator')->with('success', 'Koordinator berhasil diupdate');
     }
 
     /**
@@ -112,6 +112,6 @@ class PembimbingController extends Controller
     {
         User::destroy($id);
 
-        return redirect('/pembimbing')->with('success', 'Pembimbing berhasil dihapus');
+        return redirect('/koordinator')->with('success', 'Koordinator berhasil dihapus');
     }
 }
