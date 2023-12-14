@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Judulprojek;
-use App\Http\Requests\StoreJudulprojekRequest;
-use App\Http\Requests\UpdateJudulprojekRequest;
+use App\Models\User;
 use App\Models\Logbook;
 use App\Models\Presentasi;
-use App\Models\User;
+use App\Models\Judulprojek;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreJudulprojekRequest;
+use App\Http\Requests\UpdateJudulprojekRequest;
 
 class JudulprojekController extends Controller
 {
@@ -21,6 +22,12 @@ class JudulprojekController extends Controller
         if (auth()->user()->level_id === 4 || auth()->user()->level_id === 3) {
             return view('judulprojek.index', [
                 'judulprojeks' => Judulprojek::all()
+            ]);
+        }
+
+        if (auth()->user()->level_id == 2) {
+            return view('judulprojek.index', [
+                'judulprojeks' => Judulprojek::where('pembimbing', auth()->user()->nama)->get()
             ]);
         }
 
@@ -65,7 +72,14 @@ class JudulprojekController extends Controller
      */
     public function show($id)
     {
-        // 
+        $judulprojek = DB::table('judulprojeks')
+            ->join('users', 'users.id', 'judulprojeks.user_id')
+            ->select('judulprojeks.*', 'users.nama')
+            ->get();
+
+        $judulprojek = $judulprojek->where('id', $id)->first();
+
+        return response()->json($judulprojek);
     }
 
     /**

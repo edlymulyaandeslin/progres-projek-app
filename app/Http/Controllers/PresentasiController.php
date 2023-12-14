@@ -7,6 +7,7 @@ use App\Models\Logbook;
 use App\Models\Presentasi;
 use App\Models\Judulprojek;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PresentasiController extends Controller
 {
@@ -16,7 +17,7 @@ class PresentasiController extends Controller
     public function index()
     {
         // admin
-        if (auth()->user()->level_id === 4) {
+        if (auth()->user()->level_id === 4 || auth()->user()->level_id === 3) {
 
             return view('presentasi.index', [
                 'presents' => Presentasi::all(),
@@ -27,8 +28,16 @@ class PresentasiController extends Controller
         // mentor
         if (auth()->user()->level_id === 2) {
 
+            $presents = DB::table('presentasis')
+                ->join('judulprojeks', 'judulprojeks.id', 'presentasis.judul_id')
+                ->join('users', 'users.id', 'presentasis.user_id')
+                ->select('presentasis.*', 'judulprojeks.judul', 'judulprojeks.pembimbing', 'users.nama')
+                ->get();
+
+            $presents = $presents->where('pembimbing', auth()->user()->nama);
+
             return view('presentasi.index', [
-                'presents' => Presentasi::all(),
+                'presents' => $presents,
                 'status' =>  Logbook::where('user_id', auth()->user()->id)->where('status', 'diterima')->get()
             ]);
         }
@@ -69,9 +78,18 @@ class PresentasiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Presentasi $presentasi)
+    public function show($id)
     {
-        //
+
+        $present = DB::table('presentasis')
+            ->join('judulprojeks', 'judulprojeks.id', 'presentasis.judul_id')
+            ->join('users', 'users.id', 'judulprojeks.user_id')
+            ->select('presentasis.*', 'users.nama')
+            ->get();
+
+        $present = $present->where('id', $id)->first();
+
+        return response()->json($present);
     }
 
     /**

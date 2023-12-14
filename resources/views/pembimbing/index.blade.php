@@ -47,10 +47,10 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#JudulView" data-id="{{ $pembimbing->id }}"><i
-                                                            class="bi bi-search text-info"></i>
-                                                        Show</button>
+                                                    <a href="javascript:void(0)" id="show-pembimbing"
+                                                        data-url="{{ route('pembimbing.show', $pembimbing->id) }}"
+                                                        class="dropdown-item"><i class="bi bi-search text-info"></i>
+                                                        Show</a>
                                                 </li>
 
                                                 <li><a class="dropdown-item"
@@ -87,43 +87,60 @@
                     @endif
                 </tbody>
             </table>
-            {{-- ajukan presentasi --}}
-            @if (auth()->user()->level_id == 1 && count($status) >= 2)
-                <a href="/presentasi" class="btn btn-sm btn-primary"><i class="bi bi-box-arrow-in-right"></i> Ajukan
-                    Presentasi </a>
-            @endif
+
         </div>
 
         <!-- Modal show -->
-        <div class="modal fade" id="JudulView" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        <div class="modal fade" id="pembimbingView" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Details</h1>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="judul" class="form-label">Judul</label>
-                                    <input type="text" id="judul" class="form-control" disabled>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="pembimbing" class="form-label">Pembimbing</label>
-                                    <input type="text" id="pembimbing" class="form-control" disabled>
+                                    <label for="namaMahasiswa" class="form-label">Nama Mahasiswa</label>
+                                    <input type="text" id="namaMahasiswa" class="form-control" disabled>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="status" class="form-label">Status</label>
-                                    <input type="text" id="status" class="form-control" disabled>
-                                    {{-- value="{{ $judul->status === 1 ? 'Disetujui' : 'Belum disetujui' }}"> --}}
+                                    <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
+                                    <input type="text" id="tempat_lahir" class="form-control" disabled>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
+                                    <input type="text" id="tanggal_lahir" class="form-control" disabled>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="agama" class="form-label">Agama</label>
+                                    <input type="text" id="agama" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="text" id="email" class="form-control" disabled>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="jenisKelamin" class="form-label">Jenis Kelamin</label>
+                                    <input type="text" id="jenisKelamin" class="form-control" disabled>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="alamat" class="form-label">Alamat</label>
+                                    <textarea name="alamat" id="alamat" class="form-control" rows="5" readonly></textarea>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -131,33 +148,47 @@
                 </div>
             </div>
         </div>
-
     </div>
 @endsection
 
-<!-- resources/views/data/index.blade.php -->
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $('body').on('click', '#show-pembimbing', function() {
 
-<!-- Tambahkan ini di bagian bawah file blade template -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
-    // $(document).ready(function() {
-    //     $('#JudulView').on('show.bs.modal', function(e) {
-    //         var dataId = $(e.relatedTarget).data('id');
+                let judulUrl = $(this).data('url');
 
-    //         // Lakukan AJAX request ke server
-    //         $.ajax({
-    //             url: '/judulprojek/' + dataId,
-    //             type: 'GET',
-    //             dataType: 'json',
-    //             success: function(data) {
-    //                 // Setel data ke dalam modal
-    //                 $('#modalTitle').text(data.judul);
-    //                 $('#modalDescription').text(data.deskripsi);
-    //             },
-    //             error: function(error) {
-    //                 console.log(error);
-    //             }
-    //         });
-    //     });
-    // });
-</script>
+                $.get(judulUrl, function(data) {
+                    $('#pembimbingView').modal('show');
+
+                    // format tanggal
+                    let tanggalLahirDb = new Date(data.tanggal_lahir);
+
+                    function formatTanggal(date) {
+                        let options = {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        };
+                        return date.toLocaleDateString('id-ID',
+                            options); // Sesuaikan dengan preferensi lokal Anda
+                    }
+                    let tanggalLahir = formatTanggal(tanggalLahirDb);
+
+                    console.log(data)
+                    $('#namaMahasiswa').val(data.nama);
+                    $('#tempat_lahir').val(data.tempat_lahir);
+                    $('#tanggal_lahir').val(tanggalLahir);
+                    $('#agama').val(data.agama);
+                    $('#email').val(data.email);
+                    $('#jenisKelamin').val(data.jenis_kelamin);
+                    $('#alamat').val(data.alamat);
+                    $('#status').val(data.status);
+
+
+
+                })
+            })
+        })
+    </script>
+@endsection

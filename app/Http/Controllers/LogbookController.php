@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Logbook;
 use App\Models\Judulprojek;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LogbookController extends Controller
 {
@@ -23,8 +25,21 @@ class LogbookController extends Controller
 
         // mentor
         if (auth()->user()->level_id === 2) {
+            $logbooks = DB::table('logbooks')
+                ->join('judulprojeks', 'judulprojeks.id', 'logbooks.judul_id')
+                ->join('users', 'users.id', 'logbooks.user_id')
+                ->select('logbooks.*', 'judulprojeks.judul', 'judulprojeks.pembimbing', 'users.nama')
+                ->get();
+
+            $logbooks = $logbooks->where('pembimbing', auth()->user()->nama);
+
+            $logbooks->transform(function ($logbook) {
+                $logbook->created_at = Carbon::parse($logbook->created_at)->format('j F Y');
+                return $logbook;
+            });
+
             return view('logbook.index', [
-                'logbooks' => Logbook::all()
+                'logbooks' => $logbooks,
             ]);
         }
 
@@ -70,9 +85,16 @@ class LogbookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Logbook $logbook)
+    public function show($id)
     {
-        //
+        $logbook = DB::table('logbooks')
+            ->join('judulprojeks', 'judulprojeks.id', 'logbooks.judul_id')
+            ->select('logbooks.*', 'judulprojeks.judul')
+            ->get();
+
+        $logbook = $logbook->where('id', $id)->first();
+
+        return response()->json($logbook);
     }
 
     /**

@@ -2,9 +2,9 @@
 @section('content')
     <div class="col-sm-12 col-xl-12">
         <div class="bg-light rounded h-100 p-4">
-            <h4 class="mb-4">Isi Data Mahasiswa</h4>
+            <h4 class="mb-4">Isi Data Koordinator</h4>
 
-            <form action="/mahasiswa" method="post">
+            <form action="/koordinator" method="post">
                 @csrf
                 <div class="row">
 
@@ -68,7 +68,7 @@
                             @enderror
                         </div>
 
-                        {{-- <div class="mb-3">
+                        <div class="mb-3">
                             <label for="level_id" class="form-label">Level</label>
                             <select name="level_id" id="level_id"
                                 class="form-control @error('level_id') is-invalid @enderror">
@@ -82,7 +82,7 @@
                                     {{ $message }}
                                 </p>
                             @enderror
-                        </div> --}}
+                        </div>
 
                     </div>
                     {{-- col 2 --}}

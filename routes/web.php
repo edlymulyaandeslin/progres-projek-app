@@ -7,6 +7,7 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\PembimbingController;
 use App\Http\Controllers\PresentasiController;
 use App\Http\Controllers\JudulprojekController;
+use App\Http\Controllers\KoordinatorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,9 @@ Route::resource('/presentasi', PresentasiController::class)->middleware('auth');
 
 // route pembimbing
 Route::resource('/pembimbing', PembimbingController::class)->middleware('auth');
+
+// route pembimbing
+Route::resource('/koordinator', KoordinatorController::class)->middleware('auth');
 
 // route mahasiswa
 Route::resource('/mahasiswa', MahasiswaController::class)->middleware('auth');
