@@ -16,12 +16,6 @@ class LogbookController extends Controller
      */
     public function index()
     {
-        // admin
-        if (auth()->user()->level_id === 4) {
-            return view('logbook.index', [
-                'logbooks' => Logbook::all()
-            ]);
-        }
 
         // mentor
         if (auth()->user()->level_id === 2) {
@@ -29,27 +23,25 @@ class LogbookController extends Controller
                 ->join('judulprojeks', 'judulprojeks.id', 'logbooks.judul_id')
                 ->join('users', 'users.id', 'logbooks.user_id')
                 ->select('logbooks.*', 'judulprojeks.judul', 'judulprojeks.pembimbing', 'users.nama')
-                ->get();
-
-            $logbooks = $logbooks->where('pembimbing', auth()->user()->nama);
-
-            $logbooks->transform(function ($logbook) {
-                $logbook->created_at = Carbon::parse($logbook->created_at)->format('j F Y');
-                return $logbook;
-            });
+                ->where('pembimbing', auth()->user()->nama)
+                ->where('judul', 'like', '%' . request('search') . '%')
+                ->orWhere('nama', 'like', '%' . request('search') . '%')
+                ->orWhere('description', 'like', '%' . request('search') . '%')
+                ->orWhere('logbooks.created_at', 'like', '%' . request('search') . '%')
+                ->orWhere('logbooks.status', 'like', '%' . request('search') . '%')
+                ->latest();
 
             return view('logbook.index', [
-                'logbooks' => $logbooks,
+                'logbooks' => $logbooks->paginate(5)->withQueryString(),
             ]);
         }
 
         // users / mahasiswa
-        $logbooks = Logbook::where('user_id', auth()->user()->id)->get();
-        $logbookStatus = $logbooks->where('status', 'diterima');
+        $logbooks = Logbook::latest()->filter(request(['search']))->where('user_id', auth()->user()->id)->paginate(5)->withQueryString();
 
         return view('logbook.index', [
             'logbooks' => $logbooks,
-            'status' => $logbookStatus
+            'status' => Logbook::where('user_id', auth()->user()->id)->where('status', 'diterima')->get(),
         ]);
     }
 

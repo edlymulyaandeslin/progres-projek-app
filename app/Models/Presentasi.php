@@ -17,6 +17,16 @@ class Presentasi extends Model
     protected $dates = [
         'tanggal'
     ];
+
+    public function scopeFilter($query, array $filters)
+    {
+
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+            return $query->where('status', 'like', '%' . $search . '%')
+                ->orWhere('created_at', 'like', '%' . $search . '%');
+        });
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

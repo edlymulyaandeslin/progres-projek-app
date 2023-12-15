@@ -83,6 +83,8 @@
         <!-- Template Javascript -->
         <script src="{{ asset('dashmin') }}/js/main.js"></script>
 
+        {{-- bootstrap --}}
+
         {{-- script jquery --}}
         @yield('script')
 

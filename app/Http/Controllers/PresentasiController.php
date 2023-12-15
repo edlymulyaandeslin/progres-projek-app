@@ -19,8 +19,19 @@ class PresentasiController extends Controller
         // admin
         if (auth()->user()->level_id === 4 || auth()->user()->level_id === 3) {
 
+            $presents = DB::table('presentasis')
+                ->join('judulprojeks', 'judulprojeks.id', 'presentasis.judul_id')
+                ->join('users', 'users.id', 'presentasis.user_id')
+                ->select('presentasis.*', 'judulprojeks.judul', 'judulprojeks.pembimbing', 'users.nama')
+                ->where('judul', 'like', '%' . request('search') . '%')
+                ->orWhere('nama', 'like', '%' . request('search') . '%')
+                ->orWhere('tanggal', 'like', '%' . request('search') . '%')
+                ->orWhere('jam', 'like', '%' . request('search') . '%')
+                ->orWhere('presentasis.status', 'like', '%' . request('search') . '%')
+                ->paginate(5)->withQueryString();
+
             return view('presentasi.index', [
-                'presents' => Presentasi::all(),
+                'presents' => $presents,
                 'status' =>  Logbook::where('user_id', auth()->user()->id)->where('status', 'diterima')->get()
             ]);
         }
@@ -32,9 +43,14 @@ class PresentasiController extends Controller
                 ->join('judulprojeks', 'judulprojeks.id', 'presentasis.judul_id')
                 ->join('users', 'users.id', 'presentasis.user_id')
                 ->select('presentasis.*', 'judulprojeks.judul', 'judulprojeks.pembimbing', 'users.nama')
-                ->get();
+                ->where('pembimbing', auth()->user()->nama)
+                ->where('judul', 'like', '%' . request('search') . '%')
+                ->orWhere('nama', 'like', '%' . request('search') . '%')
+                ->orWhere('tanggal', 'like', '%' . request('search') . '%')
+                ->orWhere('jam', 'like', '%' . request('search') . '%')
+                ->orWhere('presentasis.status', 'like', '%' . request('search') . '%')
+                ->paginate(5)->withQueryString();
 
-            $presents = $presents->where('pembimbing', auth()->user()->nama);
 
             return view('presentasi.index', [
                 'presents' => $presents,
@@ -44,7 +60,7 @@ class PresentasiController extends Controller
 
         // users / mahasiswa
         return view('presentasi.index', [
-            'presents' => Presentasi::where('user_id', auth()->user()->id)->get(),
+            'presents' => Presentasi::where('user_id', auth()->user()->id)->filter(request(['search']))->paginate(5)->withQueryString(),
             'status' =>  Logbook::where('user_id', auth()->user()->id)->where('status', 'diterima')->get()
         ]);
     }

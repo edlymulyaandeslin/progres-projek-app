@@ -14,6 +14,16 @@ class Judulprojek extends Model
 
     protected $guarded = ['id'];
 
+    public function scopeFilter($query, array $filters)
+    {
+
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+            return $query->where('judul', 'like', '%' . $search . '%')
+                ->orWhere('pembimbing', 'like', '%' . $search . '%')
+                ->orWhere('status', 'like', '%' . $search . '%');
+        });
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

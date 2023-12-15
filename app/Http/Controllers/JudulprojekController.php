@@ -19,20 +19,23 @@ class JudulprojekController extends Controller
     public function index()
     {
 
+        // admin dan koordinator
         if (auth()->user()->level_id === 4 || auth()->user()->level_id === 3) {
             return view('judulprojek.index', [
-                'judulprojeks' => Judulprojek::all()
+                'judulprojeks' => Judulprojek::latest()->filter(request(['search']))->paginate(5)->withQueryString()
             ]);
         }
 
+        // mentor
         if (auth()->user()->level_id == 2) {
             return view('judulprojek.index', [
-                'judulprojeks' => Judulprojek::where('pembimbing', auth()->user()->nama)->get()
+                'judulprojeks' => Judulprojek::where('pembimbing', auth()->user()->nama)->latest()->filter(request(['search']))->paginate(5)->withQueryString()
             ]);
         }
 
+        // mahasiswa
         return view('judulprojek.index', [
-            'judulprojeks' => Judulprojek::where('user_id', auth()->user()->id)->get()
+            'judulprojeks' => Judulprojek::where('user_id', auth()->user()->id)->latest()->filter(request(['search']))->paginate(5)->withQueryString()
         ]);
     }
 

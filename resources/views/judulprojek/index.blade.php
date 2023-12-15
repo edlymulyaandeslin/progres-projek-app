@@ -12,12 +12,23 @@
                 </div>
             @endif
 
-            @if (auth()->user()->level_id === 1)
-                <div class="text-end mb-2">
-                    <a href="/judulprojek/create" class="btn btn-sm btn-outline-primary ">Tambah <i
-                            class="fa fa-plus"></i></a>
+            <div class="d-flex justify-content-between">
+                <div class="col-md-5">
+                    <form action="/judulprojek">
+                        <div class="input-group mb-3">
+                            <input type="text" name="search" class="form-control" placeholder="Search"
+                                value="{{ request('search') }}" autofocus>
+                            <button class="btn btn-outline-primary" type="submit">Search</button>
+                        </div>
+                    </form>
                 </div>
-            @endif
+                @if (auth()->user()->level_id === 1)
+                    <div class="">
+                        <a href="/judulprojek/create" class="btn btn-sm btn-outline-primary ">Ajukan Judul <i
+                                class="fa fa-plus"></i></a>
+                    </div>
+                @endif
+            </div>
 
             <table class="table">
                 <thead>
@@ -108,9 +119,14 @@
 
                 </tbody>
             </table>
+
+            {{-- pagination --}}
+            <div class="d-flex justify-content-center">
+                {{ $judulprojeks->links() }}
+            </div>
+
         </div>
     </div>
-
     <!-- Modal show -->
     <div class="modal fade" id="judulView" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">

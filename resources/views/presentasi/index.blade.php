@@ -11,13 +11,25 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
+            <div class="d-flex justify-content-between">
 
-            @if (count($status) >= 2 && auth()->user()->level_id === 1)
-                <div class="text-end mb-2">
-                    <a href="/presentasi/create" class="btn btn-sm btn-outline-primary ">Ajukan Presentasi <i
-                            class="fa fa-plus"></i></a>
+                <div class="col-md-5">
+                    <form action="/presentasi">
+                        <div class="input-group mb-3">
+                            <input type="text" name="search" class="form-control" placeholder="Search"
+                                value="{{ request('search') }}" autofocus>
+                            <button class="btn btn-outline-primary" type="submit">Search</button>
+                        </div>
+                    </form>
                 </div>
-            @endif
+
+                @if (count($status) >= 2 && auth()->user()->level_id === 1)
+                    <div class="text-end mb-2">
+                        <a href="/presentasi/create" class="btn btn-sm btn-outline-primary ">Ajukan Presentasi <i
+                                class="fa fa-plus"></i></a>
+                    </div>
+                @endif
+            </div>
 
             <table class="table">
                 <thead>
@@ -40,20 +52,22 @@
                                 @if (auth()->user()->level_id === 2)
                                     <td>{{ $present->nama }}</td>
                                 @elseif (auth()->user()->level_id !== 1)
-                                    <td>{{ $present->user->nama }}</td>
+                                    <td>{{ $present->nama }}</td>
                                 @endif
 
-                                @if (auth()->user()->level_id == 2)
-                                    <td>{{ $present->judul }}</td>
-                                @else
+                                @if (auth()->user()->level_id == 1)
                                     <td>{{ $present->judul->judul }}</td>
+                                @else
+                                    <td>{{ $present->judul }}</td>
                                 @endif
+
                                 <td>
                                     <p
                                         class="px-1 bg-{{ $present->status == 'diterima' ? 'success' : ($present->status == 'ditolak' ? 'danger' : 'warning') }} rounded text-white">
                                         {{ $present->status }}
                                     </p>
                                 </td>
+
                                 @if (auth()->user()->level_id === 3 || auth()->user()->level_id === 2)
                                     <td>
                                         <!-- Example single danger button -->
@@ -111,6 +125,10 @@
                     @endif
                 </tbody>
             </table>
+
+            <div class="d-flex justify-content-center">
+                {{ $presents->links() }}
+            </div>
 
         </div>
 

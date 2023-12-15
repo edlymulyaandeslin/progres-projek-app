@@ -11,12 +11,25 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
+            <div class="d-flex justify-content-between">
 
-            @if (auth()->user()->level_id === 1)
-                <div class="text-end mb-2">
-                    <a href="/logbook/create" class="btn btn-sm btn-outline-primary ">Tambah <i class="fa fa-plus"></i></a>
+                <div class="col-md-5">
+                    <form action="/logbook">
+                        <div class="input-group mb-3">
+                            <input type="text" name="search" class="form-control" placeholder="Search"
+                                value="{{ request('search') }}" autofocus>
+                            <button class="btn btn-outline-primary" type="submit">Search</button>
+                        </div>
+                    </form>
                 </div>
-            @endif
+
+                @if (auth()->user()->level_id === 1)
+                    <div class="text-end mb-2">
+                        <a href="/logbook/create" class="btn btn-sm btn-outline-primary ">Isi Logbook <i
+                                class="fa fa-plus"></i></a>
+                    </div>
+                @endif
+            </div>
 
             <table class="table">
                 <thead>
@@ -37,12 +50,14 @@
                 <tbody>
                     @if (count($logbooks) !== 0)
                         @foreach ($logbooks as $logbook)
+                            {{-- {{ \Carbon\Carbon::parse($logbook->created_at)->format('j F Y') }} --}}
                             <tr class="text-center">
 
                                 <th scope="row">{{ $loop->iteration }}</th>
                                 @if (auth()->user()->level_id !== 1)
                                     <td>{{ $logbook->nama }}</td>
                                 @endif
+
                                 @if (auth()->user()->level_id === 1)
                                     <td>{{ $logbook->judul->judul }}</td>
                                 @else
@@ -51,15 +66,9 @@
 
                                 <td>{{ $logbook->description }}</td>
 
-                                @if (auth()->user()->level_id === 1)
-                                    <td>
-                                        {{ $logbook->created_at->day }}-{{ $logbook->created_at->month }}-{{ $logbook->created_at->year }}
-                                    </td>
-                                @else
-                                    <td>
-                                        {{ $logbook->created_at }}
-                                    </td>
-                                @endif
+                                <td>
+                                    {{ \Carbon\Carbon::parse($logbook->created_at)->format('j F Y') }}
+                                </td>
 
                                 <td>
                                     <p
@@ -116,11 +125,18 @@
                     @endif
                 </tbody>
             </table>
+
+            {{-- pagination --}}
+            <div class="d-flex justify-content-center">
+                {{ $logbooks->links() }}
+            </div>
+
             {{-- ajukan presentasi --}}
-            @if (auth()->user()->level_id == 1 && count($status) >= 2)
+            @if (auth()->user()->level_id == 1 && $status->count() >= 2)
                 <a href="/presentasi" class="btn btn-sm btn-primary"><i class="bi bi-box-arrow-in-right"></i> Ajukan
                     Presentasi </a>
             @endif
+
         </div>
 
         <!-- Modal show -->
