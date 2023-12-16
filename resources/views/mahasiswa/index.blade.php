@@ -5,17 +5,9 @@
 
         <div class="bg-light rounded h-100 p-4">
 
-            @if (session()->has('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-
             @if (auth()->user()->level_id === 3 || auth()->user()->level_id === 4)
                 <div class="text-end mb-2">
-                    <a href="/mahasiswa/create" class="btn btn-sm btn-outline-primary ">Tambah <i
-                            class="fa fa-plus"></i></a>
+                    <a href="/mahasiswa/create" class="btn btn-sm btn-outline-primary ">Tambah <i class="fa fa-plus"></i></a>
                 </div>
             @endif
 

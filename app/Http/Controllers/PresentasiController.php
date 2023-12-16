@@ -8,6 +8,7 @@ use App\Models\Presentasi;
 use App\Models\Judulprojek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PresentasiController extends Controller
 {
@@ -88,7 +89,9 @@ class PresentasiController extends Controller
 
         Presentasi::create($validateData);
 
-        return redirect('/presentasi')->with('success', 'Presentasi telah diajukan, mohon menunggu konfirmasi pembimbing atau koordinator');
+        Alert::success('Success!', 'Presentasi Telah Diajukan, Mohon Menunggu Konfirmasi Pembimbing atau Koordinator');
+
+        return redirect('/presentasi');
     }
 
     /**
@@ -132,7 +135,10 @@ class PresentasiController extends Controller
 
         Presentasi::where('id', $id)->update($validateData);
 
-        return redirect('/presentasi')->with('success', 'Presentasi berhasil di update');
+        Alert::success('Success!', 'Presentasi Berhasil diupdate');
+
+
+        return redirect('/presentasi');
     }
 
     /**
@@ -142,6 +148,9 @@ class PresentasiController extends Controller
     {
         Presentasi::destroy($id);
 
-        return redirect('/presentasi')->with('success', 'Presentasi berhasil di hapus');
+        Alert::success('Success!', 'Presentasi Berhasil dihapus');
+
+
+        return redirect('/presentasi');
     }
 }

@@ -5,13 +5,6 @@
 
         <div class="bg-light rounded h-100 p-4">
 
-            @if (session()->has('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-
             <div class="d-flex justify-content-between">
                 <div class="col-md-5">
                     <form action="/judulprojek">
@@ -97,6 +90,16 @@
                                                                 class="bi bi-trash-fill text-danger"></i>
                                                             Delete</button>
                                                     </form>
+
+                                                    {{-- <form action="/judulprojek/{{ $judulprojek->id }}" method="POST"
+                                                        data-confirm-delete="true">
+                                                        @method('delete')
+                                                        @csrf
+                                                        <button type="submit" class="dropdown-item"><i
+                                                                class="bi bi-trash-fill text-danger"></i>
+                                                            Delete</button>
+                                                    </form> --}}
+
                                                 </li>
                                             </ul>
                                         </div>

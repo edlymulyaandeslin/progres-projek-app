@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Logbook;
 use App\Models\Judulprojek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class LogbookController extends Controller
 {
@@ -71,7 +70,9 @@ class LogbookController extends Controller
 
         Logbook::create($validateData);
 
-        return redirect('/logbook')->with('success', 'Log book berhasil dibuat');
+        Alert::success('Success!', 'Log Book Berhasil Dibuat');
+
+        return redirect('/logbook');
     }
 
     /**
@@ -112,7 +113,9 @@ class LogbookController extends Controller
 
         Logbook::where('id', $id)->update($validateData);
 
-        return redirect('/logbook')->with('success', 'Log book berhasil diupdate');
+        Alert::success('Success!', 'Log Book Berhasil Diupdate');
+
+        return redirect('/logbook');
     }
 
     /**
@@ -122,6 +125,8 @@ class LogbookController extends Controller
     {
         Logbook::destroy($id);
 
-        return redirect('/logbook')->with('success', 'Log book berhasil dihapus');
+        Alert::success('Success!', 'Log Book Berhasil Dihapus');
+
+        return redirect('/logbook');
     }
 }

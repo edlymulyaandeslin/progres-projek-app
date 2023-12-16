@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Judulprojek;
+use App\Models\User;
 use App\Models\Logbook;
 use App\Models\Presentasi;
-use App\Models\User;
+use App\Models\Judulprojek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class MahasiswaController extends Controller
 {
@@ -66,7 +67,9 @@ class MahasiswaController extends Controller
 
         User::create($validateData);
 
-        return redirect('/mahasiswa')->with('success', 'Mahasiswa berhasil ditambahkan');
+        Alert::success('Success!', 'Mahasiswa Berhasil Ditambahkan');
+
+        return redirect('/mahasiswa');
     }
 
     /**
@@ -120,7 +123,9 @@ class MahasiswaController extends Controller
 
         User::where('id', $id)->update($validateData);
 
-        return redirect('/mahasiswa')->with('success', 'Data Mahasiswa berhasil diperbarui');
+        Alert::success('Success!', 'Data Mahasiswa Berhasil Diperbarui');
+
+        return redirect('/mahasiswa');
     }
 
     /**
@@ -136,6 +141,8 @@ class MahasiswaController extends Controller
 
         Presentasi::where('user_id', $id)->delete();
 
-        return redirect('/mahasiswa')->with('success', 'Data Mahasiswa berhasil dihapus');
+        Alert::success('Success!', 'Data Mahasiswa Berhasil Dihapus');
+
+        return redirect('/mahasiswa');
     }
 }
