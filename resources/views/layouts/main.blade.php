@@ -50,11 +50,11 @@
             @include('layouts.partials.sidebar')
 
             <!-- Content Start -->
-            <div class="content h-100">
+            <div class="content">
 
                 @include('layouts.partials.navbar')
 
-                <div class="container-fluid pt-4 px-4 ">
+                <div class="content-body container-fluid pt-4 px-4 ">
                     @yield('content')
                 </div>
 
@@ -87,6 +87,8 @@
 
         {{-- script jquery --}}
         @yield('script')
+
+        @include('sweetalert::alert')
 
     </body>
 

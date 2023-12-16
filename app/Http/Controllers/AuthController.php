@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use PhpParser\Node\Expr\BinaryOp\Equal;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AuthController extends Controller
 {
     // register
     public function indexRegister()
     {
+
         return view('auth.register.index');
     }
 
@@ -28,13 +29,16 @@ class AuthController extends Controller
             'jenis_kelamin' =>  'required',
             'pekerjaan' => 'required|min:5',
         ]);
+
         $validateData['password'] = bcrypt($validateData['password']);
 
         $validateData['level_id'] = 1;
 
         User::create($validateData);
 
-        return redirect('/auth/login')->with('success', 'Registrasi berhasil, silahkan login');
+        Alert::success('Success!', 'Pendaftaran Berhasil Anda Dapat Login Sekarang');
+
+        return redirect('/auth/login');
     }
 
     // login
@@ -54,10 +58,10 @@ class AuthController extends Controller
 
             $request->session()->regenerate();;
 
-            return redirect()->intended('/');
+            return redirect()->intended('/')->with('toast_success', 'Login Berhasil');
         }
 
-        return back()->with('error', 'Login gagal');
+        return back()->with('toast_error', 'Login gagal');
     }
 
     // logout
@@ -68,6 +72,8 @@ class AuthController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+        Alert::success('Logout Berhasil')->toToast();
 
         return redirect('/auth/login');
     }
