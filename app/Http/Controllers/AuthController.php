@@ -58,10 +58,14 @@ class AuthController extends Controller
 
             $request->session()->regenerate();;
 
-            return redirect()->intended('/')->with('toast_success', 'Login Berhasil');
+            Alert::success('Login Berhasil')->toToast()->autoClose(3000);
+
+            return redirect()->intended('/');
         }
 
-        return back()->with('toast_error', 'Login gagal');
+        Alert::error('Login Gagal')->toToast()->autoClose(3000);
+
+        return back();
     }
 
     // logout
@@ -73,7 +77,7 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        Alert::success('Logout Berhasil')->toToast();
+        Alert::success('Logout Berhasil')->toToast()->autoClose(3000);
 
         return redirect('/auth/login');
     }
