@@ -8,8 +8,9 @@ use App\Models\Presentasi;
 use App\Models\Judulprojek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\StoreJudulprojekRequest;
-use App\Http\Requests\UpdateJudulprojekRequest;
+use RealRashid\SweetAlert\Facades\Alert;
+
+use function Laravel\Prompts\confirm;
 
 class JudulprojekController extends Controller
 {
@@ -65,9 +66,9 @@ class JudulprojekController extends Controller
 
         Judulprojek::create($validateData);
 
-        return redirect('/judulprojek')->with('success', 'Judul Berhasil Diajukan, mohon menunggu acc koordinator');
+        Alert::success('Success!', 'Judul Berhasil Diajukan, Mohon Menunggu Acc Koordinator');
 
-        // dd('nice');
+        return redirect('/judulprojek');
     }
 
     /**
@@ -113,7 +114,9 @@ class JudulprojekController extends Controller
 
         Judulprojek::where('id', $id)->update($validateData);
 
-        return redirect('/judulprojek')->with('success', 'Judul Berhasil Diupdate');
+        Alert::success('Success!', 'Judul Berhasil Diupdate');
+
+        return redirect('/judulprojek');
     }
 
     /**
@@ -121,12 +124,15 @@ class JudulprojekController extends Controller
      */
     public function destroy($id)
     {
+
         Judulprojek::destroy($id);
 
         Logbook::where('judul_id', $id)->delete();
 
         Presentasi::where('judul_id', $id)->delete();
 
-        return redirect('/judulprojek')->with('success', 'Judul berhasil dihapus');
+        Alert::success('Success!', 'Judul Berhasil Dihapus');
+
+        return redirect('/judulprojek');
     }
 }

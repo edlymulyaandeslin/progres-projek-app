@@ -88,6 +88,8 @@
         {{-- script jquery --}}
         @yield('script')
 
+        @include('sweetalert::alert')
+
     </body>
 
 </html>

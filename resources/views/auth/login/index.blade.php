@@ -16,21 +16,7 @@
             <div class="row">
                 <div>
 
-                    <div class="mt-5">
-                        @if (session()->has('success'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-
-                        @if (session()->has('error'))
-                            <div class="alert alert-danger" role="alert">
-                                {{ session('error') }}
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="mb-3 text-center text-white">
+                    <div class="mt-5 mb-3 text-center text-white">
                         <h2 class="fw-bold">Progres Projek<h2>
                                 <hr>
                                 <h3>Login</h3>
@@ -81,6 +67,9 @@
 
             </div>
         </div>
+
+        @include('sweetalert::alert')
+
         <script src="/js/script.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>

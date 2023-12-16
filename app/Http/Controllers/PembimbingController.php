@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Level;
 use App\Models\User;
+use App\Models\Level;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PembimbingController extends Controller
 {
@@ -49,7 +50,9 @@ class PembimbingController extends Controller
 
         User::create($validateData);
 
-        return redirect('/pembimbing')->with('success', 'Pembimbing berhasil ditambahkan');
+        Alert::success('Success!', 'Pembimbing Berhasil Ditambahkan');
+
+        return redirect('/pembimbing');
     }
 
     /**
@@ -102,7 +105,9 @@ class PembimbingController extends Controller
 
         User::where('id', $id)->update($validateData);
 
-        return redirect('/pembimbing')->with('success', 'Pembimbing berhasil diupdate');
+        Alert::success('Success!', 'Pembimbing Berhasil Diupdate');
+
+        return redirect('/pembimbing');
     }
 
     /**
@@ -112,6 +117,8 @@ class PembimbingController extends Controller
     {
         User::destroy($id);
 
-        return redirect('/pembimbing')->with('success', 'Pembimbing berhasil dihapus');
+        Alert::success('Success!', 'Pembimbing Berhasil Dihapus');
+
+        return redirect('/pembimbing');
     }
 }

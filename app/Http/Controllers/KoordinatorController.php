@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Level;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KoordinatorController extends Controller
 {
@@ -49,7 +50,9 @@ class KoordinatorController extends Controller
 
         User::create($validateData);
 
-        return redirect('/koordinator')->with('success', 'Koordinator berhasil ditambahkan');
+        Alert::success('Success!', 'Koordinator Berhasil Ditambahkan');
+
+        return redirect('/koordinator');
     }
 
     /**
@@ -102,7 +105,9 @@ class KoordinatorController extends Controller
 
         User::where('id', $id)->update($validateData);
 
-        return redirect('/koordinator')->with('success', 'Koordinator berhasil diupdate');
+        Alert::success('Success!', 'Koordinator Berhasil Diupdate');
+
+        return redirect('/koordinator');
     }
 
     /**
@@ -112,6 +117,8 @@ class KoordinatorController extends Controller
     {
         User::destroy($id);
 
-        return redirect('/koordinator')->with('success', 'Koordinator berhasil dihapus');
+        Alert::success('Success!', 'Koordinator Berhasil Dihapus');
+
+        return redirect('/koordinator');
     }
 }
