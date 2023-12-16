@@ -23,19 +23,8 @@
                 background-image: url("/img/4.jpg");
             }
 
-            h2 {
-                border-bottom: black 1px;
-                color: black;
-                font-weight: bold;
-            }
-
             .body-regist {
                 background-color: rgba(255, 255, 255, 0.4);
-                color: black;
-            }
-
-            .link-login {
-                text-decoration: none;
                 color: black;
             }
 
@@ -43,8 +32,8 @@
                 color: rgb(245, 245, 245);
             }
 
-            .regist {
-                font-weight: bold;
+            .link-login:hover {
+                color: rgb(245, 245, 245);
             }
         </style>
     </head>
@@ -54,7 +43,7 @@
             <div class="row">
                 <div class="body-regist col-md-6 mt-4 mb-4 offset-3 p-4 rounded ">
                     <div class="mt-5 mb-3 text-center text-white">
-                        <h2>Progres Projek<h2>
+                        <h2 class="text-black">Progres Projek<h2>
                                 <hr class="m-0">
                     </div>
                     <h4 class="regist text-center text-uppercase">Register</h4>
@@ -160,44 +149,48 @@
                                     </label>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="mb-3">
-                                <label for="pekerjaan" class="form-label">Pekerjaan</label>
-                                <input type="text" class="form-control @error('pekerjaan') is-invalid @enderror"
-                                    id="pekerjaan" name="pekerjaan" value="{{ old('pekerjaan') }}">
-                                @error('pekerjaan')
-                                    <p class="text-danger">
-                                        {{ $message }}
-                                    </p>
-                                @enderror
-                            </div>
+                        <div class="mb-3">
+                            <label for="pekerjaan" class="form-label">Pekerjaan</label>
+                            <input type="text" class="form-control @error('pekerjaan') is-invalid @enderror"
+                                id="pekerjaan" name="pekerjaan" value="{{ old('pekerjaan') }}">
+                            @error('pekerjaan')
+                                <p class="text-danger">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
 
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control  @error('password') is-invalid @enderror"
-                                    name="password" id="password">
-                                @error('password')
-                                    <p class="text-danger">
-                                        {{ $message }}
-                                    </p>
-                                @enderror
-                            </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control  @error('password') is-invalid @enderror"
+                                name="password" id="password">
+                            @error('password')
+                                <p class="text-danger">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
 
-                            <button type="submit" class="btn btn-primary">Register</button>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary w-50">Register</button>
+                        </div>
+
                     </form>
 
                     <div class="mt-2">
-                        <small>Sudah memilki akun? <a href="/auth/login" class="link-login">Login di sini</a></small>
+                        <small>Sudah memilki akun? <a href="/auth/login" class="link-login fw-bold">Login di
+                                sini</a></small>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-        @include('sweetalert::alert')
+            @include('sweetalert::alert')
 
     </body>
 
