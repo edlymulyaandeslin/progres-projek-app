@@ -16,22 +16,24 @@
             <div class="row">
                 <div>
 
-                    @if (session()->has('success'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+                    <div class="mt-5">
+                        @if (session()->has('success'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('success') }}
+                            </div>
+                        @endif
 
-                    @if (session()->has('error'))
-                        <div class="alert alert-danger" role="alert">
-                            {{ session('error') }}
-                        </div>
-                    @endif
+                        @if (session()->has('error'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+                    </div>
 
-                    <div class="mt-5 mb-3 text-center text-white">
-                        <h2>Progres Projek<h2>
+                    <div class="mb-3 text-center text-white">
+                        <h2 class="fw-bold">Progres Projek<h2>
                                 <hr>
-                                <h2 style="font-weight: bold">Login</h2>
+                                <h3>Login</h3>
                     </div>
 
                     <form action="/auth/login" method="post">
@@ -64,9 +66,9 @@
                             @enderror
                         </div>
 
-                        <button type="submit" class="submit" value="Sign In">Login</button>
+                        <button type="submit" class="submit" value="login">Login</button>
                     </form>
-                    <div class="two-col mt-2 ">
+                    <div class="two-col my-2">
                         <div class="quest-box">
                             <span>Don't have an account?
                                 <a href="/auth/register" onclick="register()">Sign Up</a></span>
