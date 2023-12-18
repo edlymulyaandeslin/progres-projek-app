@@ -184,7 +184,7 @@
                     $('#presentView').modal('show');
 
                     if (data.status !== 'diterima') {
-                        $('.modal-title').text('Presentasi Anda belum diterima');
+                        $('.modal-title').text('Presentasi Belum Diterima');
                         $('.modal-body').html(
                             "<p class='text-center'>Tidak Ada Jadwal Presentasi</p>");
                     }

@@ -126,17 +126,25 @@ class PresentasiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validateData = $request->validate([
+
+        $rules = [
             'judul_id' => 'required',
-            'tanggal' => 'required',
-            'jam' => 'required',
             'status' => 'string'
-        ]);
+        ];
+
+        if ($request->input('tanggal')) {
+            $rules['tanggal'] = 'required';
+        }
+
+        if ($request->input('jam')) {
+            $rules['jam'] = 'required';
+        }
+
+        $validateData = $request->validate($rules);
 
         Presentasi::where('id', $id)->update($validateData);
 
         Alert::success('Success!', 'Presentasi Berhasil diupdate');
-
 
         return redirect('/presentasi');
     }
