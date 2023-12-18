@@ -183,12 +183,16 @@
                 $.get(judulUrl, function(data) {
                     $('#presentView').modal('show');
 
-                    if (data.status !== 'diterima') {
+                    if (data.status == 'diajukan') {
                         $('.modal-title').text('Presentasi Belum Diterima');
                         $('.modal-body').html(
                             "<p class='text-center'>Tidak Ada Jadwal Presentasi</p>");
                     }
-
+                    if (data.status == 'ditolak') {
+                        $('.modal-title').text('Maaf Presentasi Ditolak');
+                        $('.modal-body').html(
+                            "<p class='text-center'>Silahkan Ajukan Presentasi Kembali!!</p>");
+                    }
                     // format tanggal
                     let dateFromDatabase = new Date(data.tanggal);
 
