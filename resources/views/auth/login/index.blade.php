@@ -27,37 +27,39 @@
                         <div class="input-box">
 
                         </div>
-                        <div class=" input-box mb-2">
-                            <input type="text" class="input-field" placeholder="Username or Email"
-                                @error('email') is-invalid @enderror id="email" name="email"
-                                value="{{ old('email') }}"> <i class="bx bx-user"></i>
-                            @error('email')
-                                <p class="text-danger">
-                                    {{ $message }}
-                                </p>
-                            @enderror
+                        <div class=" input-box">
+                            <input type="text" class="input-field @error('email') is-invalid @enderror"
+                                placeholder="Email" id="email" name="email" value="{{ old('email') }}">
+                            <i class="bx bx-user"></i>
                         </div>
+                        @error('email')
+                            <p class="text-danger">
+                                {{ $message }}
+                            </p>
+                        @enderror
 
-                        <div class="input-box mb-2">
-                            <input type="password" class="input-field" placeholder="Password"
-                                @error('password') is-invalid @enderror('password') name="password" id="password">
-                            <i class="bx bx-lock-alt"></i>
-                            <span class="show-password-icon" onclick="togglePasswordVisibility('password')">
+                        <div class="input-box">
+                            <input type="password" class="input-field @error('password') is-invalid @enderror"
+                                placeholder="Password" name="password" id="password">
+                            <i class="bx bx-lock"></i>
+                            <span class="show-password-icon " onclick="togglePasswordVisibility('password')">
                                 <i class="bx bx-show" id="passwordIcon"></i>
                             </span>
-                            @error('password')
-                                <p class="text-danger">
-                                    {{ $message }}
-                                </p>
-                            @enderror
                         </div>
+                        @error('password')
+                            <p class="text-danger">
+                                {{ $message }}
+                            </p>
+                        @enderror
 
-                        <button type="submit" class="submit" value="login">Login</button>
+                        <div class="mt-3">
+                            <button type="submit" class="submit">Login</button>
+                        </div>
                     </form>
                     <div class="two-col my-2">
                         <div class="quest-box">
                             <span>Don't have an account?
-                                <a href="/auth/register" onclick="register()">Sign Up</a></span>
+                                <a href="/auth/register">Sign Up</a></span>
                         </div>
                         <div class="two">
                             <label><a href="#">Forgot password?</a></label>

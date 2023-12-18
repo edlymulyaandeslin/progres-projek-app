@@ -9,33 +9,15 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 
         <style>
-            form {
-                /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-                padding: 0 15px;
-            }
-
-            .container {
-                /* opacity: 0.8; */
-                /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-            }
-
             body {
                 background-image: url("/img/4.jpg");
             }
 
             .body-regist {
                 background-color: rgba(255, 255, 255, 0.4);
-                color: black;
-            }
-
-            .link-login:hover {
-                color: rgb(245, 245, 245);
-            }
-
-            .link-login:hover {
-                color: rgb(245, 245, 245);
             }
         </style>
+
     </head>
 
     <body>
@@ -149,6 +131,11 @@
                                     </label>
                                 </div>
                             </div>
+                            @error('jenis_kelamin')
+                                <p class="text-danger">
+                                    {{ $message }}
+                                </p>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
@@ -180,7 +167,9 @@
                     </form>
 
                     <div class="mt-2">
-                        <small>Sudah memilki akun? <a href="/auth/login" class="link-login fw-bold">Login di
+                        <small class="link-light">Sudah memilki akun? <a href="/auth/login"
+                                class="link-secondary">Login
+                                di
                                 sini</a></small>
                     </div>
                 </div>
