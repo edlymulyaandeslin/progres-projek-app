@@ -35,11 +35,8 @@
                  <div class="nav-item dropdown">
                      <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                          <img class="rounded-circle me-lg-2"
-                             src="https://ui-avatars.com/api/?name={{ auth()->user()->nama }}&background=random"
-                             alt="" style="width: 40px; height: 40px;">
-                         {{-- <img class="rounded-circle me-lg-2"
-                             src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=random" alt=""
-                             style="width: 40px; height: 40px;"> --}}
+                             src="https://ui-avatars.com/api/?name={{ auth()->user()->nama }}" alt=""
+                             style="width: 40px; height: 40px;">
                          <span class="d-none d-lg-inline-flex">{{ auth()->user()->nama }}</span>
                      </a>
                      <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
