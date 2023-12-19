@@ -8,6 +8,8 @@ use App\Models\Presentasi;
 use App\Models\Judulprojek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class MahasiswaController extends Controller
@@ -65,11 +67,13 @@ class MahasiswaController extends Controller
 
         $validateData['level_id'] = 1;
 
-        User::create($validateData);
+        $user = User::create($validateData);
+        event(new Registered($user));
+        Auth::login($user);
 
         Alert::success('Success!', 'Mahasiswa Berhasil Ditambahkan');
 
-        return redirect('/mahasiswa');
+        return redirect('/email/verify');
     }
 
     /**
