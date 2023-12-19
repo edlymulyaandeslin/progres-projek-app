@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LogbookController;
@@ -11,6 +10,7 @@ use App\Http\Controllers\PresentasiController;
 use App\Http\Controllers\JudulprojekController;
 use App\Http\Controllers\KoordinatorController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use RealRashid\SweetAlert\Facades\Alert;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,14 +60,22 @@ Route::prefix('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-    //sending verify
-    Route::get('/email/verify', function () {
-        return view('mahasiswa.verify-email');
-    })->middleware('auth')->name('verification.notice');
+//halaman verivy
+Route::get('/email/verify', function () {
+    return view('mahasiswa.verify-email');
+})->middleware('auth')->name('verification.notice');
 
-    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request,$id, $hash) {
+// verified
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
 
-        $request->fulfill();
+    // Alert::success('Success!', 'Student email has been verified!')->toToast();
+    return redirect('/');
+})->middleware(['auth', 'signed'])->name('verification.verify');
 
-        return redirect('/');
-    })->middleware(['auth', 'signed'])->name('verification.verify');
+// send ulang
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('toast_success', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.resend');

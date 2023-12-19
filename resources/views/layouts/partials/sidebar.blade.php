@@ -40,25 +40,21 @@
                                     class="fa fa-user-shield me-2"></i>Koordinator</a>
                         @endif
 
-                        @if (auth()->user()->level_id !== 4)
-                            <a href="/judulprojek"
-                                class="nav-item nav-link {{ Request::is('judulprojek*') ? 'active' : '' }}"><i
-                                    class="fa fa-keyboard me-2"></i>Pengajuan
-                                Judul</a>
-                        @endif
+                        <a href="/judulprojek"
+                            class="nav-item nav-link {{ Request::is('judulprojek*') ? 'active' : '' }}"><i
+                                class="fa fa-keyboard me-2"></i>Pengajuan
+                            Judul</a>
 
-                        @if (auth()->user()->level_id === 1 || auth()->user()->level_id === 2)
+                        @if (auth()->user()->level_id !== 3)
                             <a href="/logbook"
                                 class="nav-item nav-link {{ Request::is('logbook*') ? 'active' : '' }}"><i
                                     class="fa fa-address-book me-2"></i>Log
                                 Book</a>
                         @endif
 
-                        @if (auth()->user()->level_id !== 4)
-                            <a href="/presentasi"
-                                class="nav-item nav-link {{ Request::is('presentasi*') ? 'active' : '' }}"><i
-                                    class="fa fa-address-card me-2"></i>Presentasi</a>
-                        @endif
+                        <a href="/presentasi"
+                            class="nav-item nav-link {{ Request::is('presentasi*') ? 'active' : '' }}"><i
+                                class="fa fa-address-card me-2"></i>Presentasi</a>
 
                     </div>
                 </nav>
