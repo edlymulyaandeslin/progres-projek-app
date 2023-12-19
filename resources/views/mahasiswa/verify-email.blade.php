@@ -1,22 +1,29 @@
 @extends('layouts.main')
+
 @section('content')
-<div class="body-verify vh-75 d-flex justify-content-center align-items-center">
-    <div class="row">
-            <div class="text-center">
-                <h2>Mengirim Email Verifikasi</h2>
-                <p>Silahkan cek email anda</p>
-                <button class="rounded btn-info">Kirim Ulang</button>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">{{ __('Verify Your Email Address') }}</div>
+
+                    <div class="card-body">
+                        @if (session('resent'))
+                            <div class="alert alert-success" role="alert">
+                                {{ __('A fresh verification link has been sent to your email address.') }}
+                            </div>
+                        @endif
+
+                        {{ __('Before proceeding, please check your email for a verification link.') }}
+                        {{ __('If you did not receive the email') }},
+                        <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
+                            @csrf
+                            <button type="submit"
+                                class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
+                        </form>
+                    </div>
+                </div>
             </div>
-
+        </div>
     </div>
-</div>
-{{-- <div class="card col-md-8 offset-3 w-50 mb-3 bg-light">
-    <div class="card-body">
-      <h5 class="card-title">Mengirim Email Verifikasi</h5>
-      <p class="card-text">Silahkan Cek Email Anda !!</p>
-      <p class="card-text">countDown In one minute</p>
-      <a href="#" class="btn btn-primary">Kirim ulang</a>
-    </div>
-  </div> --}}
-
 @endsection

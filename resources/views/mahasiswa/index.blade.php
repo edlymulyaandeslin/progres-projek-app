@@ -34,44 +34,54 @@
                                         {{ $mahasiswa->status }}
                                     </p>
                                 </td>
-                                <td>
-                                    <!-- Example single danger button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-dark" data-bs-toggle="dropdown"
-                                            aria-expanded="false">
-                                            <i class="bi bi-list"></i>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a href="javascript:void(0)" id="show-mahasiswa"
-                                                    data-url="{{ route('mahasiswa.show', $mahasiswa->id) }}"
-                                                    class="dropdown-item"><i class="bi bi-search text-info"></i>
-                                                    Show</a>
-                                            </li>
 
-                                            <li><a class="dropdown-item" href="/mahasiswa/{{ $mahasiswa->id }}/edit"><i
-                                                        class="bi bi-pencil-square text-warning"></i>
-                                                    Update
-                                                </a></li>
+                                @if (auth()->user()->level_id !== 2)
+                                    <td>
+                                        <!-- Example single danger button -->
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-dark"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-list"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a href="javascript:void(0)" id="show-mahasiswa"
+                                                        data-url="{{ route('mahasiswa.show', $mahasiswa->id) }}"
+                                                        class="dropdown-item"><i class="bi bi-search text-info"></i>
+                                                        Show</a>
+                                                </li>
 
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
+                                                <li><a class="dropdown-item" href="/mahasiswa/{{ $mahasiswa->id }}/edit"><i
+                                                            class="bi bi-pencil-square text-warning"></i>
+                                                        Update
+                                                    </a></li>
 
-                                            <li>
-                                                <form action="/mahasiswa/{{ $mahasiswa->id }}" method="POST">
-                                                    @method('delete')
-                                                    @csrf
-                                                    <button type="submit" class="dropdown-item"
-                                                        onclick="return confirm('Yakin ingin menghapus data ini?')"><i
-                                                            class="bi bi-trash-fill text-danger"></i>
-                                                        Delete</button>
-                                                </form>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
 
-                                </td>
+                                                <li>
+                                                    <form action="/mahasiswa/{{ $mahasiswa->id }}" method="POST">
+                                                        @method('delete')
+                                                        @csrf
+                                                        <button type="submit" class="dropdown-item"
+                                                            onclick="return confirm('Yakin ingin menghapus data ini?')"><i
+                                                                class="bi bi-trash-fill text-danger"></i>
+                                                            Delete</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                @else
+                                    <td>
+                                        <a href="javascript:void(0)" id="show-mahasiswa"
+                                            data-url="{{ route('mahasiswa.show', $mahasiswa->id) }}"
+                                            class="btn btn-sm btn-outline-primary"><i class="bi bi-eye-fill"></i>
+                                        </a>
+                                    </td>
+                                @endif
+
                             </tr>
                         @endforeach
                     @else

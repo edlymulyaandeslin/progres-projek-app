@@ -67,9 +67,11 @@ class MahasiswaController extends Controller
 
         $validateData['level_id'] = 1;
 
-        $user = User::create($validateData);
-        event(new Registered($user));
-        Auth::login($user);
+        event(new Registered($validateData));
+
+        User::create($validateData);
+
+        // Auth::login($user);
 
         Alert::success('Success!', 'Mahasiswa Berhasil Ditambahkan');
 
