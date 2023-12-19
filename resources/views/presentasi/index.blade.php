@@ -183,33 +183,35 @@
                 $.get(judulUrl, function(data) {
                     $('#presentView').modal('show');
 
-                    if (data.status == 'diajukan') {
+                    if (data.status === 'diterima') {
+                        // format tanggal
+                        let dateFromDatabase = new Date(data.tanggal);
+
+                        function formatTanggal(date) {
+                            let options = {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            };
+                            return date.toLocaleDateString('id-ID',
+                                options);
+                        }
+                        let formattedDate = formatTanggal(dateFromDatabase);
+
+                        $('#ketua').text(data.nama);
+                        $('#tanggal').text(formattedDate);
+                        $('#jam').text(data.jam + ' WIB');
+
+                    } else if (data.status === 'ditolak') {
+                        $('.modal-title').text('Maaf Presentasi Ditolak');
+                        $('.modal-body').html(
+                            "<p class='text-center'>Silahkan Ajukan Presentasi Kembali!!</p>"
+                        );
+                    } else {
                         $('.modal-title').text('Presentasi Belum Diterima');
                         $('.modal-body').html(
                             "<p class='text-center'>Tidak Ada Jadwal Presentasi</p>");
                     }
-                    if (data.status == 'ditolak') {
-                        $('.modal-title').text('Maaf Presentasi Ditolak');
-                        $('.modal-body').html(
-                            "<p class='text-center'>Silahkan Ajukan Presentasi Kembali!!</p>");
-                    }
-                    // format tanggal
-                    let dateFromDatabase = new Date(data.tanggal);
-
-                    function formatTanggal(date) {
-                        let options = {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        };
-                        return date.toLocaleDateString('id-ID',
-                            options); // Sesuaikan dengan preferensi lokal Anda
-                    }
-                    let formattedDate = formatTanggal(dateFromDatabase);
-
-                    $('#ketua').text(data.nama);
-                    $('#tanggal').text(formattedDate);
-                    $('#jam').text(data.jam + ' WIB');
 
 
                 })

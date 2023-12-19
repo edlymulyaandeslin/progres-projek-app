@@ -46,8 +46,8 @@ Route::resource('/mahasiswa', MahasiswaController::class)->middleware('auth');
 // authenticate register dan login
 Route::prefix('auth')->group(function () {
     // Register user
-    Route::get('/register', [AuthController::class, 'indexRegister']);
-    Route::post('/register', [AuthController::class, 'store']);
+    // Route::get('/register', [AuthController::class, 'indexRegister']);
+    // Route::post('/register', [AuthController::class, 'store']);
 
     // login
     Route::get('/login', [AuthController::class, 'indexLogin'])->name('login');
