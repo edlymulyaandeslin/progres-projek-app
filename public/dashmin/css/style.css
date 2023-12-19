@@ -86,6 +86,9 @@
 .content-body {
     min-height: 75vh;
 }
+.body-verify {
+    min-height: 70vh;
+}
 
 @media (min-width: 992px) {
     .sidebar {
