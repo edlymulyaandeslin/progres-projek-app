@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LogbookController;
@@ -8,6 +10,7 @@ use App\Http\Controllers\PembimbingController;
 use App\Http\Controllers\PresentasiController;
 use App\Http\Controllers\JudulprojekController;
 use App\Http\Controllers\KoordinatorController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +25,7 @@ use App\Http\Controllers\KoordinatorController;
 
 Route::get('/', function () {
     return view('welcome');
-})->middleware('auth');
+})->middleware(['auth', 'verified']);
 
 
 // route judul projek
@@ -56,3 +59,15 @@ Route::prefix('auth')->group(function () {
     // logout
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+
+    //sending verify
+    Route::get('/email/verify', function () {
+        return view('mahasiswa.verify-email');
+    })->middleware('auth')->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request,$id, $hash) {
+
+        $request->fulfill();
+
+        return redirect('/');
+    })->middleware(['auth', 'signed'])->name('verification.verify');
