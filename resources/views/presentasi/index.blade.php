@@ -184,6 +184,7 @@
                     $('#presentView').modal('show');
 
                     if (data.status === 'diterima') {
+
                         // format tanggal
                         let dateFromDatabase = new Date(data.tanggal);
 
@@ -201,11 +202,16 @@
                         $('#ketua').text(data.nama);
                         $('#tanggal').text(formattedDate);
                         $('#jam').text(data.jam + ' WIB');
-
                     } else if (data.status === 'ditolak') {
                         $('.modal-title').text('Maaf Presentasi Ditolak');
                         $('.modal-body').html(
                             "<p class='text-center'>Silahkan Ajukan Presentasi Kembali!!</p>"
+                        );
+                    } else if (data.status === 'selesai') {
+                        $('.modal-title').text('Selamat Presentasi Anda Telah Selesai');
+                        $('.modal-body').html(
+                            "<p class='text-center'>LULUS!!</p>" +
+                            "<p class='text-center'><i class='bi bi-star-fill text-warning'></i> <i class='bi bi-star-fill text-warning'></i> <i class='bi bi-star-fill text-warning'> </i><i class='bi bi-star-fill text-warning'> </i><i class='bi bi-star-fill text-warning'></i></p>"
                         );
                     } else {
                         $('.modal-title').text('Presentasi Belum Diterima');
