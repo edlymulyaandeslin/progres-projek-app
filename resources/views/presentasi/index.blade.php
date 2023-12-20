@@ -57,7 +57,7 @@
 
                                 <td>
                                     <p
-                                        class="px-1 bg-{{ $present->status == 'diterima' ? 'success' : ($present->status == 'ditolak' ? 'danger' : 'warning') }} rounded text-white">
+                                        class="px-1 bg-{{ $present->status == 'diterima' ? 'success' : ($present->status == 'ditolak' ? 'danger' : ($present->status == 'selesai' ? 'primary' : 'warning')) }} rounded text-white">
                                         {{ $present->status }}
                                     </p>
                                 </td>

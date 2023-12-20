@@ -126,10 +126,16 @@ class MahasiswaController extends Controller
             $rules['tanggal_selesai'] = 'required';
         }
 
+
+
         $validateData = $request->validate($rules);;
 
         if ($request->input('password')) {
             $validateData['password'] = bcrypt($request->input('password'));
+        }
+
+        if ($request->input('status') == 'deactive') {
+            $validateData['email_verified_at'] = null;
         }
 
         User::where('id', $id)->update($validateData);

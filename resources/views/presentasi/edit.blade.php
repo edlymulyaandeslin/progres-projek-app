@@ -57,12 +57,19 @@
                         @if ($present->status == 'diterima')
                             <option value="diterima" selected>Diterima</option>
                             <option value="ditolak">Ditolak</option>
+                            <option value="selesai">Selesai</option>
                         @elseif ($present->status == 'ditolak')
                             <option value="diterima">Diterima</option>
                             <option value="ditolak" selected>Ditolak</option>
+                            <option value="selesai">Selesai</option>
+                        @elseif ($present->status == 'selesai')
+                            <option value="diterima">Diterima</option>
+                            <option value="ditolak">Ditolak</option>
+                            <option value="selesai" selected>Selesai</option>
                         @else
                             <option value="diterima">Diterima</option>
                             <option value="ditolak">Ditolak</option>
+                            <option value="selesai">Selesai</option>
                         @endif
                     </select>
                 </div>
