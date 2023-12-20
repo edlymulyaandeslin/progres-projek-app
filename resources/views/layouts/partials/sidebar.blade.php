@@ -56,6 +56,9 @@
                             class="nav-item nav-link {{ Request::is('presentasi*') ? 'active' : '' }}"><i
                                 class="fa fa-address-card me-2"></i>Presentasi</a>
 
+                        <a href="/laporan" class="nav-item nav-link {{ Request::is('laporan*') ? 'active' : '' }}"><i
+                                class="fa fa-book-dead me-2"></i>Report</a>
+
                     </div>
                 </nav>
             </div>
