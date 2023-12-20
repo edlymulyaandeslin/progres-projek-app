@@ -52,10 +52,6 @@
                                                     </a></li>
 
                                                 <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-
-                                                <li>
                                                     <form action="/koordinator/{{ $koordinator->id }}" method="POST">
                                                         @method('delete')
                                                         @csrf
@@ -64,6 +60,24 @@
                                                                 class="bi bi-trash-fill text-danger"></i>
                                                             Delete</button>
                                                     </form>
+                                                </li>
+
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+
+                                                <li>
+                                                    @if ($koordinator->email_verified_at)
+                                                        <p class="dropdown-item text-primary">{{ __('Account Verified') }}
+                                                        </p>
+                                                    @else
+                                                        <form method="POST"
+                                                            action="/email/verification-notification/{{ $koordinator->id }}">
+                                                            @csrf
+                                                            <button type="submit"
+                                                                class="dropdown-item text-primary">{{ __('Send Verified Email') }}</button>.
+                                                        </form>
+                                                    @endif
                                                 </li>
                                             </ul>
                                         </div>

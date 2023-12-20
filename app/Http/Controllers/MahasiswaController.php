@@ -33,6 +33,8 @@ class MahasiswaController extends Controller
             ]);
         }
 
+
+
         return view('mahasiswa.index', [
             'mahasiswas' => User::where('level_id', 1)->get()
         ]);
@@ -59,7 +61,7 @@ class MahasiswaController extends Controller
             'tanggal_lahir' => 'required',
             'alamat' => 'required|min:5',
             'agama' => 'required',
-            'jenis_kelamin' =>  'required',
+            'jenis_kelamin' => 'required',
             'pekerjaan' => 'required|min:5',
         ]);
 
@@ -67,15 +69,11 @@ class MahasiswaController extends Controller
 
         $validateData['level_id'] = 1;
 
-        event(new Registered($validateData));
-
         User::create($validateData);
-
-        // Auth::login($user);
 
         Alert::success('Success!', 'Mahasiswa Berhasil Ditambahkan');
 
-        return redirect('/email/verify');
+        return redirect('/mahasiswa');
     }
 
     /**
@@ -112,13 +110,20 @@ class MahasiswaController extends Controller
             'agama' => 'required',
             'jenis_kelamin' =>  'required',
             'pekerjaan' => 'required|min:5',
-            'tanggal_mulai' => 'required',
-            'tanggal_selesai' => 'required',
             'status' => 'required'
         ];
 
+
         if ($request->input('password')) {
             $rules['password'] = 'required|min:8';
+        }
+
+        if ($request->input('tanggal_mulai')) {
+            $rules['tanggal_mulai'] = 'required';
+        }
+
+        if ($request->input('tanggal_selesai')) {
+            $rules['tanggal_selesai'] = 'required';
         }
 
         $validateData = $request->validate($rules);;

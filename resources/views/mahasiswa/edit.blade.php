@@ -214,14 +214,21 @@
                             <label for="status" class="form-label">Status</label>
                             <select name="status" class="form-control @error('status') is-invalid @enderror"
                                 id="status">
-                                <option value="active" selected>Active</option>
-                                @if (old('status', $mahasiswa->status) == 'selesai')
-                                    <option value="selesai" selected>Selesai</option>
+                                <option value="deactive" selected>Deactive</option>
+                                @if (old('status', $mahasiswa->status) == 'active')
+                                    <option value="active" selected>Active</option>
+                                    <option value="selesai">Selesai</option>
                                     <option value="tidak selesai">Tidak Selesai</option>
+                                @elseif (old('status', $mahasiswa->status) == 'selesai')
+                                    <option value="active">Active</option>
+                                    <option value="selesai" selected>Selesai</option>
+                                    <option value="tidak selesai" selected>Tidak Selesai</option>
                                 @elseif (old('status', $mahasiswa->status) == 'tidak selesai')
+                                    <option value="active">Active</option>
                                     <option value="selesai">Selesai</option>
                                     <option value="tidak selesai" selected>Tidak Selesai</option>
                                 @else
+                                    <option value="active">Active</option>
                                     <option value="selesai">Selesai</option>
                                     <option value="tidak selesai">Tidak Selesai</option>
                                 @endif

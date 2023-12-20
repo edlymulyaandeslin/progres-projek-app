@@ -28,9 +28,10 @@
                                 <th scope="row">{{ $loop->iteration }}</th>
                                 <td>{{ $mahasiswa->nama }}</td>
                                 <td>{{ $mahasiswa->email }}</td>
+
                                 <td>
                                     <p
-                                        class="py-1 px-4 bg-{{ $mahasiswa->status == 'selesai' ? 'success' : ($mahasiswa->status == 'tidak selesai' ? 'danger' : 'warning') }} rounded text-white">
+                                        class="py-1 px-4 bg-{{ $mahasiswa->status == 'selesai' ? 'success' : ($mahasiswa->status == 'tidak selesai' ? 'danger' : ($mahasiswa->status == 'active' ? 'warning' : 'dark')) }} rounded text-white">
                                         {{ $mahasiswa->status }}
                                     </p>
                                 </td>
@@ -54,10 +55,7 @@
                                                 <li><a class="dropdown-item" href="/mahasiswa/{{ $mahasiswa->id }}/edit"><i
                                                             class="bi bi-pencil-square text-warning"></i>
                                                         Update
-                                                    </a></li>
-
-                                                <li>
-                                                    <hr class="dropdown-divider">
+                                                    </a>
                                                 </li>
 
                                                 <li>
@@ -69,6 +67,24 @@
                                                                 class="bi bi-trash-fill text-danger"></i>
                                                             Delete</button>
                                                     </form>
+                                                </li>
+
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+
+                                                <li>
+                                                    @if ($mahasiswa->email_verified_at)
+                                                        <p class="dropdown-item text-primary">{{ __('Account Verified') }}
+                                                        </p>
+                                                    @else
+                                                        <form method="POST"
+                                                            action="/email/verification-notification/{{ $mahasiswa->id }}">
+                                                            @csrf
+                                                            <button type="submit"
+                                                                class="dropdown-item text-primary">{{ __('Send Verified Email') }}</button>.
+                                                        </form>
+                                                    @endif
                                                 </li>
                                             </ul>
                                         </div>

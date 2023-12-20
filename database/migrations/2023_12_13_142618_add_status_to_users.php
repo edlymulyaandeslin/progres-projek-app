@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('tanggal_mulai')->default('');
             $table->string('tanggal_selesai')->default('');
-            $table->string('status')->default('active');
+            $table->string('status')->default('deactive');
         });
     }
 

@@ -52,6 +52,14 @@
                             </p>
                         @enderror
 
+                        <div>
+                            <label for="remember" class="text-white">
+                                <input type="checkbox" name="remember" id="remember"
+                                    {{ old('remember') ? 'checked' : '' }}>
+                                Remember Me
+                            </label>
+                        </div>
+
                         <div class="mt-3">
                             <button type="submit" class="submit">Login</button>
                         </div>

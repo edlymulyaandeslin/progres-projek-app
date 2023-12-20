@@ -54,7 +54,7 @@ class AuthController extends Controller
             'password' => 'required|min:8'
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $request->filled('remember'))) {
 
             $request->session()->regenerate();;
 
@@ -80,5 +80,53 @@ class AuthController extends Controller
         Alert::success('Logout Berhasil')->toToast()->autoClose(3000);
 
         return redirect('/auth/login');
+    }
+
+    // VERIVIKASI EMAIL
+    public function sendVerifyEmail($id)
+    {
+        $user = User::find($id);
+
+        if ($user) {
+            $user->sendEmailVerificationNotification();
+
+            Alert::success('Verification link sent!')->toToast()->autoClose(3000);
+
+            return back();
+        } else {
+
+            Alert::success('Failed send verification link!')->toToast()->autoClose(3000);
+
+            return back();
+        }
+    }
+
+    public function verified(Request $request, $id)
+    {
+        if (!$request->hasValidSignature()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Verification failed!'
+            ]);
+        }
+
+        $user = User::find($id);
+        if (!$user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+
+            User::where('id', $id)->update(['status' => 'active']);
+
+            Alert::success('Email has been Verified!')->toToast()->autoClose(3000);
+
+            return redirect()->to('/auth/login');
+        }
+
+        Alert::info('Your Account is Verified!')->toToast()->autoClose(3000);
+        return redirect()->to('/auth/login');
+    }
+
+    public function verifyEmailNotice()
+    {
+        return view('auth.verify-email');
     }
 }

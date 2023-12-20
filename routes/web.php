@@ -1,8 +1,11 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\PembimbingController;
@@ -10,7 +13,6 @@ use App\Http\Controllers\PresentasiController;
 use App\Http\Controllers\JudulprojekController;
 use App\Http\Controllers\KoordinatorController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use RealRashid\SweetAlert\Facades\Alert;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,7 +55,7 @@ Route::prefix('auth')->group(function () {
     // Route::post('/register', [AuthController::class, 'store']);
 
     // login
-    Route::get('/login', [AuthController::class, 'indexLogin'])->name('login');
+    Route::get('/login', [AuthController::class, 'indexLogin'])->name('login')->middleware('guest');
     Route::post('/login', [AuthController::class, 'authenticate']);
 
     // logout
@@ -61,23 +63,18 @@ Route::prefix('auth')->group(function () {
 });
 
 
-//halaman verivy
-Route::get('/email/verify', function () {
-    return view('mahasiswa.verify-email');
-})->middleware('auth')->name('verification.notice');
-
+// Verifikasi Email
+// send verify
+Route::post('/email/verification-notification/{id}', [AuthController::class, 'sendVerifyEmail'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.send');
 
 // verified
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verified'])
+    // ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
 
-    // Alert::success('Success!', 'Student email has been verified!')->toToast();
-    return redirect('/');
-})->middleware(['auth', 'signed'])->name('verification.verify');
-
-// send ulang
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-
-    return back()->with('toast_success', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
+// notice verify
+Route::get('/email/verify', [AuthController::class, 'verifyEmailNotice'])
+    ->middleware('auth')
+    ->name('verification.notice');
