@@ -44,7 +44,6 @@
                 <tbody>
                     @if (count($logbooks) !== 0)
                         @foreach ($logbooks as $logbook)
-                            {{-- {{ \Carbon\Carbon::parse($logbook->created_at)->format('j F Y') }} --}}
                             <tr class="text-center">
 
                                 <th scope="row">{{ $loop->iteration }}</th>

@@ -12,6 +12,7 @@ use App\Http\Controllers\PembimbingController;
 use App\Http\Controllers\PresentasiController;
 use App\Http\Controllers\JudulprojekController;
 use App\Http\Controllers\KoordinatorController;
+use App\Http\Controllers\LaporanController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
@@ -47,6 +48,11 @@ Route::resource('/koordinator', KoordinatorController::class)->middleware('auth'
 
 // route mahasiswa
 Route::resource('/mahasiswa', MahasiswaController::class)->middleware('auth');
+
+// route report & cetak pdf
+Route::get('/laporan', [LaporanController::class, 'laporan'])->middleware('auth');
+Route::get('/laporan/view', [LaporanController::class, 'viewPdf'])->middleware('auth');
+Route::get('/laporan/filter', [LaporanController::class, 'laporanFilter'])->middleware('auth');
 
 // authenticate register dan login
 Route::prefix('auth')->group(function () {

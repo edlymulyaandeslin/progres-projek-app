@@ -6,10 +6,9 @@ use App\Models\User;
 use App\Models\Logbook;
 use App\Models\Presentasi;
 use App\Models\Judulprojek;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Auth\Events\Registered;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class MahasiswaController extends Controller
@@ -81,7 +80,7 @@ class MahasiswaController extends Controller
      */
     public function show($id)
     {
-        $mahasiswa = User::find($id);
+        $mahasiswa = User::with('judul')->find($id);
 
         return response()->json($mahasiswa);
     }

@@ -28,8 +28,6 @@
         <!-- Template Stylesheet -->
         <link href="{{ asset('dashmin') }}/css/style.css" rel="stylesheet">
 
-        {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> --}}
-
         {{-- jquery --}}
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
             crossorigin="anonymous"></script>
@@ -64,9 +62,6 @@
             </div>
             <!-- Content End -->
 
-            <!-- Back to Top -->
-            <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i
-                    class="bi bi-arrow-up"></i></a>
         </div>
 
         <!-- JavaScript Libraries -->
