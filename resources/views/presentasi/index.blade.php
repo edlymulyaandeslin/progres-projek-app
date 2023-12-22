@@ -39,9 +39,9 @@
                 </thead>
                 <tbody>
                     @if (count($presents) !== 0)
-                        @foreach ($presents as $present)
+                        @foreach ($presents as $key => $present)
                             <tr class="text-center">
-                                <th scope="row">{{ $loop->iteration }}</th>
+                                <th scope="row">{{ $presents->firstItem() + $key }}</th>
 
                                 @if (auth()->user()->level_id === 2)
                                     <td>{{ $present->nama }}</td>
@@ -120,7 +120,17 @@
                 </tbody>
             </table>
 
-            <div class="d-flex justify-content-center">
+            {{-- pagination --}}
+            <div class="d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                    Show
+                    {{ $presents->firstItem() }}
+                    to
+                    {{ $presents->lastItem() }}
+                    of
+                    {{ $presents->total() }}
+                    Entries
+                </div>
                 {{ $presents->links() }}
             </div>
 

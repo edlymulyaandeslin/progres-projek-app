@@ -38,9 +38,9 @@
                 </thead>
                 <tbody>
                     @if (count($judulprojeks) !== 0)
-                        @foreach ($judulprojeks as $judulprojek)
+                        @foreach ($judulprojeks as $key => $judulprojek)
                             <tr class="text-center">
-                                <th scope="row">{{ $loop->iteration }}</th>
+                                <th scope="row">{{ $judulprojeks->firstItem() + $key }}</th>
 
                                 @if (auth()->user()->level_id !== 1)
                                     <td>{{ $judulprojek->user->nama }}</td>
@@ -124,7 +124,16 @@
             </table>
 
             {{-- pagination --}}
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                    Show
+                    {{ $judulprojeks->firstItem() }}
+                    to
+                    {{ $judulprojeks->lastItem() }}
+                    of
+                    {{ $judulprojeks->total() }}
+                    Entries
+                </div>
                 {{ $judulprojeks->links() }}
             </div>
 

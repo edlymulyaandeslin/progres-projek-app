@@ -22,7 +22,7 @@
                         <a href="/" class="nav-item nav-link {{ Request::is('/*') ? 'active' : '' }}"><i
                                 class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
 
-                        @if (auth()->user()->level_id === 4 || auth()->user()->level_id === 2)
+                        @if (auth()->user()->level_id !== 1)
                             <a href="/mahasiswa"
                                 class="nav-item nav-link {{ Request::is('mahasiswa*') ? 'active' : '' }}"><i
                                     class="fa fa-user-friends me-2"></i>Mahasiswa</a>
@@ -56,8 +56,11 @@
                             class="nav-item nav-link {{ Request::is('presentasi*') ? 'active' : '' }}"><i
                                 class="fa fa-address-card me-2"></i>Presentasi</a>
 
-                        <a href="/laporan" class="nav-item nav-link {{ Request::is('laporan*') ? 'active' : '' }}"><i
-                                class="fa fa-book-dead me-2"></i>Report</a>
+                        @if (auth()->user()->level_id === 4)
+                            <a href="/laporan"
+                                class="nav-item nav-link {{ Request::is('laporan*') ? 'active' : '' }}"><i
+                                    class="fa fa-book-dead me-2"></i>Report</a>
+                        @endif
 
                     </div>
                 </nav>

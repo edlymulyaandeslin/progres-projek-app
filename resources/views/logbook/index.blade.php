@@ -43,10 +43,10 @@
                 </thead>
                 <tbody>
                     @if (count($logbooks) !== 0)
-                        @foreach ($logbooks as $logbook)
+                        @foreach ($logbooks as $key => $logbook)
                             <tr class="text-center">
 
-                                <th scope="row">{{ $loop->iteration }}</th>
+                                <th scope="row">{{ $logbooks->firstItem() + $key }}</th>
                                 @if (auth()->user()->level_id !== 1)
                                     <td>{{ $logbook->nama }}</td>
                                 @endif
@@ -120,15 +120,30 @@
             </table>
 
             {{-- pagination --}}
-            <div class="d-flex justify-content-center">
-                {{ $logbooks->links() }}
-            </div>
+            <div class="d-flex justify-content-between">
+                <div class="pt-2">
+                    Show
+                    {{ $logbooks->firstItem() }}
+                    to
+                    {{ $logbooks->lastItem() }}
+                    of
+                    {{ $logbooks->total() }}
+                    Entries
+                </div>
 
-            {{-- ajukan presentasi --}}
-            @if (auth()->user()->level_id == 1 && $status->count() >= 2)
-                <a href="/presentasi" class="btn btn-sm btn-primary"><i class="bi bi-box-arrow-in-right"></i> Ajukan
-                    Presentasi </a>
-            @endif
+                <div>
+                    {{ $logbooks->links() }}
+                </div>
+
+                {{-- ajukan presentasi --}}
+                @if (auth()->user()->level_id == 1 && $status->count() >= 2)
+                    <div class="pt-1">
+                        <a href="/presentasi" class="btn btn-sm btn-primary"><i class="bi bi-box-arrow-in-right"></i> Ajukan
+                            Presentasi </a>
+                    </div>
+                @endif
+
+            </div>
 
         </div>
 

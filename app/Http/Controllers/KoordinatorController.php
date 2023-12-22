@@ -15,7 +15,7 @@ class KoordinatorController extends Controller
     public function index()
     {
         return view('koordinator.index', [
-            'koordinators' => User::where('level_id', 3)->get()
+            'koordinators' => User::where('level_id', 3)->paginate(10)
         ]);
     }
 

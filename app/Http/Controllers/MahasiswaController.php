@@ -23,9 +23,9 @@ class MahasiswaController extends Controller
             $user = DB::table('users')
                 ->join('judulprojeks', 'judulprojeks.user_id', 'users.id')
                 ->select('users.*', 'judulprojeks.pembimbing')
-                ->get();
+                ->where('pembimbing', auth()->user()->nama)
+                ->paginate(10);
 
-            $user = $user->where('pembimbing', auth()->user()->nama);
 
             return view('mahasiswa.index', [
                 'mahasiswas' => $user
@@ -35,7 +35,7 @@ class MahasiswaController extends Controller
 
 
         return view('mahasiswa.index', [
-            'mahasiswas' => User::where('level_id', 1)->get()
+            'mahasiswas' => User::where('level_id', 1)->paginate(10)
         ]);
     }
 

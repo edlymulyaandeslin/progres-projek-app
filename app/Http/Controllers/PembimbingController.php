@@ -15,7 +15,7 @@ class PembimbingController extends Controller
     public function index()
     {
         return view('pembimbing.index', [
-            'pembimbings' => User::where('level_id', 2)->get()
+            'pembimbings' => User::where('level_id', 2)->paginate(10)
         ]);
     }
 

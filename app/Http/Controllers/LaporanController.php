@@ -13,7 +13,9 @@ class LaporanController extends Controller
 
         $user = User::with(['judul' => function ($query) {
             $query->select('user_id', 'judul', 'status');
-        }])->where('level_id', 1)->paginate(2);
+        }])->where('level_id', 1)
+            ->latest()
+            ->paginate(10);
 
         return view('report.index', [
             'mahasiswas' => $user
@@ -22,7 +24,7 @@ class LaporanController extends Controller
 
     public function viewPdf()
     {
-        $users = User::where('level_id', 1)->get();
+        $users = User::where('level_id', 1)->latest()->get();
 
         $data = [
             'users' => $users
@@ -45,7 +47,7 @@ class LaporanController extends Controller
             ->whereDate('tanggal_mulai', '>=', $tanggal_mulai)
             ->whereDate('tanggal_selesai', '<=', $tanggal_selesai)
             ->where('level_id', 1)
-            ->paginate(2);
+            ->paginate(10);
 
         return view('report.index', [
             'mahasiswas' => $user

@@ -24,9 +24,9 @@
                 </thead>
                 <tbody>
                     @if (count($koordinators) !== 0)
-                        @foreach ($koordinators as $koordinator)
+                        @foreach ($koordinators as $key => $koordinator)
                             <tr class="text-center">
-                                <th scope="row">{{ $loop->iteration }}</th>
+                                <th scope="row">{{ $koordinators->firstItem() + $key }}</th>
                                 <td>{{ $koordinator->nama }}</td>
                                 <td>{{ $koordinator->email }}</td>
                                 @if (auth()->user()->level_id === 3 || auth()->user()->level_id === 4)
@@ -93,6 +93,19 @@
                     @endif
                 </tbody>
             </table>
+
+            <div class="d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                    Show
+                    {{ $koordinators->firstItem() }}
+                    to
+                    {{ $koordinators->lastItem() }}
+                    of
+                    {{ $koordinators->total() }}
+                    Entries
+                </div>
+                {{ $koordinators->links() }}
+            </div>
         </div>
 
         <!-- Modal show -->

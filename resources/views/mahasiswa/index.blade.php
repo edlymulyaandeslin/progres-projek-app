@@ -23,9 +23,9 @@
                 </thead>
                 <tbody>
                     @if (count($mahasiswas) !== 0)
-                        @foreach ($mahasiswas as $mahasiswa)
+                        @foreach ($mahasiswas as $key => $mahasiswa)
                             <tr class="text-center">
-                                <th scope="row">{{ $loop->iteration }}</th>
+                                <th scope="row">{{ $mahasiswas->firstItem() + $key }}</th>
                                 <td>{{ $mahasiswa->nama }}</td>
                                 <td>{{ $mahasiswa->email }}</td>
 
@@ -107,11 +107,18 @@
                     @endif
                 </tbody>
             </table>
-            {{-- ajukan presentasi --}}
-            @if (auth()->user()->level_id == 1 && count($status) >= 2)
-                <a href="/presentasi" class="btn btn-sm btn-primary"><i class="bi bi-box-arrow-in-right"></i> Ajukan
-                    Presentasi </a>
-            @endif
+            <div class="d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                    Show
+                    {{ $mahasiswas->firstItem() }}
+                    to
+                    {{ $mahasiswas->lastItem() }}
+                    of
+                    {{ $mahasiswas->total() }}
+                    Entries
+                </div>
+                {{ $mahasiswas->links() }}
+            </div>
         </div>
 
         <!-- Modal show -->

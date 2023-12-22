@@ -48,7 +48,7 @@
                 <thead>
                     <tr class="text-center">
                         <th scope="col">No</th>
-                        <th scope="col">Nama Mahasiswa</th>
+                        <th scope="col">Nama</th>
                         <th scope="col">Email</th>
                         <th scope="col">Judul Projek</th>
                         <th scope="col">Tanggal Mulai Magang</th>
@@ -65,18 +65,24 @@
                             <td>{{ $mahasiswa->nama }}</td>
                             <td>{{ $mahasiswa->email }}</td>
 
-                            @if ($mahasiswa->judul[0]->count() !== 0 && $mahasiswa->judul[0]->status == 'diterima')
-                                <td>{{ $mahasiswa->judul[0]->judul }}</td>
-                            @elseif ($mahasiswa->judul[0]->count() == 0 || $mahasiswa->judul[0]->status !== 'diterima')
-                                <td>-</td>
+                            @if ($mahasiswa->judul->count() !== 0)
+                                @foreach ($mahasiswa->judul as $key => $judul)
+                                    @if ($judul->status == 'diterima' && $key == 0)
+                                        <td>{{ $judul->judul }}</td>
+                                    @endif
+                                @endforeach
+                            @else
+                                <td>{{ '-' }}</td>
                             @endif
 
                             <td>
-                                {{ \Carbon\Carbon::parse($mahasiswa->tanggal_mulai)->format('j F Y') }}
+                                {{ $mahasiswa->tanggal_mulai ? \Carbon\Carbon::parse($mahasiswa->tanggal_mulai)->format('j F Y') : '-' }}
                             </td>
+
                             <td>
-                                {{ \Carbon\Carbon::parse($mahasiswa->tanggal_selesai)->format('j F Y') }}
+                                {{ $mahasiswa->tanggal_selesai ? \Carbon\Carbon::parse($mahasiswa->tanggal_selesai)->format('j F Y') : '-' }}
                             </td>
+
                             <td>{{ $mahasiswa->status }}</td>
                             <td>
                                 <a href="javascript:void(0)" id="show-mahasiswa"
@@ -243,9 +249,4 @@
             })
         })
     </script>
-    {{-- <script>
-        $('#tanggal_mulai,#tanggal_selesai').on('change', function() {
-            $('#dateFilterForm').submit();
-        })
-    </script> --}}
 @endsection

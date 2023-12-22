@@ -32,7 +32,7 @@
                 <thead>
                     <tr>
                         <th scope="col" class="px">No</th>
-                        <th scope="col" class="px">Nama Mahasiswa</th>
+                        <th scope="col" class="px">Nama</th>
                         <th scope="col" class="px">Email</th>
                         <th scope="col" class="px">Tempat Lahir</th>
                         <th scope="col" class="px">Tanggal Lahir</th>
@@ -59,22 +59,25 @@
                             <td>{{ $mahasiswa->alamat }}</td>
                             <td>{{ $mahasiswa->agama }}</td>
                             <td>{{ $mahasiswa->jenis_kelamin }}</td>
+
                             @if ($mahasiswa->judul->count() !== 0)
                                 @foreach ($mahasiswa->judul as $judul)
                                     @if ($judul->status == 'diterima')
                                         <td>{{ $judul->judul }}</td>
+                                    @elseif ($judul->status !== 'diterima')
+                                        <td>{{ '-' }}</td>
                                     @endif
                                 @endforeach
                             @else
-                                <td>-</td>
+                                <td>{{ '-' }}</td>
                             @endif
 
                             <td>
-                                {{ \Carbon\Carbon::parse($mahasiswa->tanggal_mulai)->format('j F Y') }}
+                                {{ $mahasiswa->tanggal_mulai ? \Carbon\Carbon::parse($mahasiswa->tanggal_mulai)->format('j F Y') : '-' }}
                             </td>
 
                             <td>
-                                {{ \Carbon\Carbon::parse($mahasiswa->tanggal_selesai)->format('j F Y') }}
+                                {{ $mahasiswa->tanggal_selesai ? \Carbon\Carbon::parse($mahasiswa->tanggal_selesai)->format('j F Y') : '-' }}
                             </td>
 
                             <td>{{ $mahasiswa->status }}</td>

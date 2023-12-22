@@ -24,9 +24,9 @@
                 </thead>
                 <tbody>
                     @if (count($pembimbings) !== 0)
-                        @foreach ($pembimbings as $pembimbing)
+                        @foreach ($pembimbings as $key => $pembimbing)
                             <tr class="text-center">
-                                <th scope="row">{{ $loop->iteration }}</th>
+                                <th scope="row">{{ $pembimbings->firstItem() + $key }}</th>
                                 <td>{{ $pembimbing->nama }}</td>
                                 <td>{{ $pembimbing->email }}</td>
                                 @if (auth()->user()->level_id === 3 || auth()->user()->level_id === 4)
@@ -93,7 +93,18 @@
                     @endif
                 </tbody>
             </table>
-
+            <div class="d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                    Show
+                    {{ $pembimbings->firstItem() }}
+                    to
+                    {{ $pembimbings->lastItem() }}
+                    of
+                    {{ $pembimbings->total() }}
+                    Entries
+                </div>
+                {{ $pembimbings->links() }}
+            </div>
         </div>
 
         <!-- Modal show -->
