@@ -17,28 +17,26 @@
                     </form>
                 </div>
 
-                @if (auth()->user()->level_id === 1)
+                @can('mahasiswa')
                     <div class="text-end mb-2">
                         <a href="/logbook/create" class="btn btn-sm btn-outline-primary ">Isi Logbook <i
                                 class="fa fa-plus"></i></a>
                     </div>
-                @endif
+                @endcan
             </div>
 
             <table class="table">
                 <thead>
                     <tr class="text-center">
                         <th scope="col">No</th>
-                        @if (auth()->user()->level_id !== 1)
+                        @can('!mahasiswa')
                             <th scope="col">Mahasiswa</th>
-                        @endif
+                        @endcan
                         <th scope="col">Judul</th>
                         <th scope="col">Description</th>
                         <th scope="col">Tanggal Bimbingan</th>
                         <th scope="col">Status</th>
-                        @if (auth()->user()->level_id === 2)
-                            <th scope="col">Aksi</th>
-                        @endif
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,15 +45,17 @@
                             <tr class="text-center">
 
                                 <th scope="row">{{ $logbooks->firstItem() + $key }}</th>
-                                @if (auth()->user()->level_id !== 1)
+                                @can('!mahasiswa')
                                     <td>{{ $logbook->nama }}</td>
-                                @endif
+                                @endcan
 
-                                @if (auth()->user()->level_id === 1)
+                                @can('mahasiswa')
                                     <td>{{ $logbook->judul->judul }}</td>
-                                @else
+                                @endcan
+
+                                @can('!mahasiswa')
                                     <td>{{ $logbook->judul }}</td>
-                                @endif
+                                @endcan
 
                                 <td>{{ $logbook->description }}</td>
 
@@ -70,12 +70,12 @@
                                     </p>
                                 </td>
 
-                                @if (auth()->user()->level_id === 2)
+                                @can('pembimbing')
                                     <td>
                                         <!-- Example single danger button -->
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-dark"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button type="button" class="btn btn-sm btn-outline-dark" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
                                                 <i class="bi bi-list"></i>
                                             </button>
                                             <ul class="dropdown-menu">
@@ -108,7 +108,17 @@
                                             </ul>
                                         </div>
                                     </td>
-                                @endif
+                                @endcan
+
+                                @can('!pembimbing')
+                                    <td>
+                                        <a href="javascript:void(0)" id="show-logbook"
+                                            data-url="{{ route('logbook.show', $logbook->id) }}"
+                                            class="btn btn-sm btn-outline-primary"><i class="bi bi-eye-fill "></i>
+                                        </a>
+                                    </td>
+                                @endcan
+
                             </tr>
                         @endforeach
                     @else
@@ -136,12 +146,14 @@
                 </div>
 
                 {{-- ajukan presentasi --}}
-                @if (auth()->user()->level_id == 1 && $status->count() >= 2)
-                    <div class="pt-1">
-                        <a href="/presentasi" class="btn btn-sm btn-primary"><i class="bi bi-box-arrow-in-right"></i> Ajukan
-                            Presentasi </a>
-                    </div>
-                @endif
+                @can('mahasiswa')
+                    @if ($status->count() >= 2)
+                        <div class="pt-1">
+                            <a href="/presentasi" class="btn btn-sm btn-primary"><i class="bi bi-box-arrow-in-right"></i> Ajukan
+                                Presentasi </a>
+                        </div>
+                    @endif
+                @endcan
 
             </div>
 

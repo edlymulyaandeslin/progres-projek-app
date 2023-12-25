@@ -19,6 +19,8 @@ class MahasiswaController extends Controller
     public function index()
     {
 
+        $this->authorize('!mahasiswa');
+
         if (auth()->user()->level_id == 2) {
             $user = DB::table('users')
                 ->join('judulprojeks', 'judulprojeks.user_id', 'users.id')
@@ -26,13 +28,10 @@ class MahasiswaController extends Controller
                 ->where('pembimbing', auth()->user()->nama)
                 ->paginate(10);
 
-
             return view('mahasiswa.index', [
                 'mahasiswas' => $user
             ]);
         }
-
-
 
         return view('mahasiswa.index', [
             'mahasiswas' => User::where('level_id', 1)->paginate(10)
@@ -44,6 +43,8 @@ class MahasiswaController extends Controller
      */
     public function create()
     {
+        $this->authorize('adXkoor');
+
         return view('mahasiswa.create');
     }
 
@@ -52,6 +53,8 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('adXkoor');
+
         $validateData = $request->validate([
             'nama' => 'required',
             'email' => 'required|email|unique:users',
@@ -90,6 +93,8 @@ class MahasiswaController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('adXkoor');
+
         return view('mahasiswa.edit', [
             'mahasiswa' => User::find($id)
         ]);
@@ -100,6 +105,8 @@ class MahasiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize('adXkoor');
+
         $rules = [
             'nama' => 'required',
             'email' => 'required|email',
@@ -125,8 +132,6 @@ class MahasiswaController extends Controller
             $rules['tanggal_selesai'] = 'required';
         }
 
-
-
         $validateData = $request->validate($rules);;
 
         if ($request->input('password')) {
@@ -149,6 +154,8 @@ class MahasiswaController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('adXkoor');
+
         User::destroy($id);
 
         Judulprojek::where('user_id', $id)->delete();

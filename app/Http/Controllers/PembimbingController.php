@@ -14,6 +14,8 @@ class PembimbingController extends Controller
      */
     public function index()
     {
+        $this->authorize('adXkoor');
+
         return view('pembimbing.index', [
             'pembimbings' => User::where('level_id', 2)->paginate(10)
         ]);
@@ -24,6 +26,7 @@ class PembimbingController extends Controller
      */
     public function create()
     {
+        $this->authorize('adXkoor');
 
         return view('pembimbing.create', [
             'levels' => Level::all()
@@ -35,6 +38,9 @@ class PembimbingController extends Controller
      */
     public function store(Request $request)
     {
+
+        $this->authorize('adXkoor');
+
         $validateData = $request->validate([
             'nama' => 'required',
             'tempat_lahir' => 'required',
@@ -70,6 +76,9 @@ class PembimbingController extends Controller
      */
     public function edit($id)
     {
+
+        $this->authorize('adXkoor');
+
         return view('pembimbing.edit', [
             'pembimbing' => User::find($id),
             'levels' => Level::all()
@@ -81,6 +90,8 @@ class PembimbingController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize('adXkoor');
+
         $rules = [
             'nama' => 'required',
             'tempat_lahir' => 'required',
@@ -115,6 +126,8 @@ class PembimbingController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('adXkoor');
+
         User::destroy($id);
 
         Alert::success('Success!', 'Pembimbing Berhasil Dihapus');

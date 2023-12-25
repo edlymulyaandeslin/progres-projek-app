@@ -30,34 +30,31 @@ Route::get('/', function () {
     return view('welcome');
 })->middleware(['auth', 'verified']);
 
-
+// FEATURE
 // route judul projek
 Route::resource('/judulprojek', JudulprojekController::class)->middleware('auth');
-
 // route Log Book
 Route::resource('/logbook', LogbookController::class)->middleware('auth');
-
 // route presentasi
 Route::resource('/presentasi', PresentasiController::class)->middleware('auth');
 
+// USER
 // route pembimbing
 Route::resource('/pembimbing', PembimbingController::class)->middleware('auth');
-
-// route pembimbing
-Route::resource('/koordinator', KoordinatorController::class)->middleware('auth');
-
+// route koordinator
+Route::resource('/koordinator', KoordinatorController::class)->middleware('admin');
 // route mahasiswa
 Route::resource('/mahasiswa', MahasiswaController::class)->middleware('auth');
 
 // route report & cetak pdf
-Route::get('/laporan', [LaporanController::class, 'laporan'])->middleware('auth');
-Route::get('/laporan/view', [LaporanController::class, 'viewPdf'])->middleware('auth');
-Route::get('/laporan/filter', [LaporanController::class, 'laporanFilter'])->middleware('auth');
+Route::get('/laporan', [LaporanController::class, 'laporan'])->middleware('admin');
+Route::get('/laporan/view', [LaporanController::class, 'viewPdf'])->middleware('admin');
+Route::get('/laporan/filter', [LaporanController::class, 'laporanFilter'])->middleware('admin');
 
 // authenticate register dan login
 Route::prefix('auth')->group(function () {
     // Register user
-    // Route::get('/register', [AuthController::class, 'indexRegister']);
+    // Route::get('/register', [AuthController::class, 'indexRegister']);   
     // Route::post('/register', [AuthController::class, 'store']);
 
     // login
@@ -65,7 +62,7 @@ Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'authenticate']);
 
     // logout
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
 });
 
 
