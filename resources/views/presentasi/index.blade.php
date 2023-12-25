@@ -17,21 +17,24 @@
                     </form>
                 </div>
 
-                @if (count($status) >= 2 && auth()->user()->level_id === 1)
-                    <div class="text-end mb-2">
-                        <a href="/presentasi/create" class="btn btn-sm btn-outline-primary ">Ajukan Presentasi <i
-                                class="fa fa-plus"></i></a>
-                    </div>
-                @endif
+                @can('mahasiswa')
+                    @if (count($status) >= 2)
+                        <div class="text-end mb-2">
+                            <a href="/presentasi/create" class="btn btn-sm btn-outline-primary ">Ajukan Presentasi <i
+                                    class="fa fa-plus"></i></a>
+                        </div>
+                    @endif
+                @endcan
+
             </div>
 
             <table class="table">
                 <thead>
                     <tr class="text-center">
                         <th scope="col">No</th>
-                        @if (auth()->user()->level_id !== 1)
+                        @can('!mahasiswa')
                             <th scope="col">Ketua Tim</th>
-                        @endif
+                        @endcan
                         <th scope="col">Judul</th>
                         <th scope="col">Status</th>
                         <th scope="col">Aksi</th>
@@ -43,17 +46,17 @@
                             <tr class="text-center">
                                 <th scope="row">{{ $presents->firstItem() + $key }}</th>
 
-                                @if (auth()->user()->level_id === 2)
+                                @can('!mahasiswa')
                                     <td>{{ $present->nama }}</td>
-                                @elseif (auth()->user()->level_id !== 1)
-                                    <td>{{ $present->nama }}</td>
-                                @endif
+                                @endcan
 
-                                @if (auth()->user()->level_id == 1)
+                                @can('mahasiswa')
                                     <td>{{ $present->judul->judul }}</td>
-                                @else
+                                @endcan
+
+                                @can('!mahasiswa')
                                     <td>{{ $present->judul }}</td>
-                                @endif
+                                @endcan
 
                                 <td>
                                     <p
@@ -62,12 +65,12 @@
                                     </p>
                                 </td>
 
-                                @if (auth()->user()->level_id === 3 || auth()->user()->level_id === 2)
+                                @can('pemXkoor')
                                     <td>
                                         <!-- Example single danger button -->
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-dark"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button type="button" class="btn btn-sm btn-outline-dark" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
                                                 <i class="bi bi-list"></i>
                                             </button>
                                             <ul class="dropdown-menu">
@@ -100,16 +103,16 @@
                                             </ul>
                                         </div>
                                     </td>
-                                @endif
+                                @endcan
 
-                                @if (auth()->user()->level_id == 1 || auth()->user()->level_id == 4)
+                                @can('adXmah')
                                     <td>
                                         <a href="javascript:void(0)" id="show-presentasi"
                                             data-url="{{ route('presentasi.show', $present->id) }}"
                                             class="btn btn-sm btn-outline-primary">
                                             <i class="bi bi-eye-fill"></i></a>
                                     </td>
-                                @endif
+                                @endcan
                             </tr>
                         @endforeach
                     @else
@@ -194,7 +197,6 @@
                     $('#presentView').modal('show');
 
                     if (data.status === 'diterima') {
-
                         // format tanggal
                         let dateFromDatabase = new Date(data.tanggal);
 

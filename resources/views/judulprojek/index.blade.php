@@ -15,12 +15,13 @@
                         </div>
                     </form>
                 </div>
-                @if (auth()->user()->level_id === 1)
+
+                @can('mahasiswa')
                     <div class="">
                         <a href="/judulprojek/create" class="btn btn-sm btn-outline-primary ">Ajukan Judul <i
                                 class="fa fa-plus"></i></a>
                     </div>
-                @endif
+                @endcan
             </div>
 
             <table class="table">
@@ -42,9 +43,9 @@
                             <tr class="text-center">
                                 <th scope="row">{{ $judulprojeks->firstItem() + $key }}</th>
 
-                                @if (auth()->user()->level_id !== 1)
+                                @can('!mahasiswa')
                                     <td>{{ $judulprojek->user->nama }}</td>
-                                @endif
+                                @endcan
 
                                 <td>{{ $judulprojek->judul }}</td>
                                 <td>{{ $judulprojek->pembimbing ? $judulprojek->pembimbing : '-' }}</td>
@@ -55,12 +56,13 @@
                                         {{ $judulprojek->status }}
                                     </p>
                                 </td>
-                                @if (auth()->user()->level_id === 3)
+
+                                @can('koordinator')
                                     <td>
                                         <!-- Example single danger button -->
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-dark"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button type="button" class="btn btn-sm btn-outline-dark" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
                                                 <i class="bi bi-list"></i>
                                             </button>
                                             <ul class="dropdown-menu">
@@ -71,8 +73,7 @@
                                                         Show</a>
                                                 </li>
 
-                                                <li><a class="dropdown-item"
-                                                        href="/judulprojek/{{ $judulprojek->id }}/edit"><i
+                                                <li><a class="dropdown-item" href="/judulprojek/{{ $judulprojek->id }}/edit"><i
                                                             class="bi bi-pencil-square text-warning"></i>
                                                         Update
                                                     </a></li>
@@ -90,28 +91,21 @@
                                                                 class="bi bi-trash-fill text-danger"></i>
                                                             Delete</button>
                                                     </form>
-
-                                                    {{-- <form action="/judulprojek/{{ $judulprojek->id }}" method="POST"
-                                                        data-confirm-delete="true">
-                                                        @method('delete')
-                                                        @csrf
-                                                        <button type="submit" class="dropdown-item"><i
-                                                                class="bi bi-trash-fill text-danger"></i>
-                                                            Delete</button>
-                                                    </form> --}}
-
                                                 </li>
                                             </ul>
                                         </div>
 
                                     </td>
-                                @else
+                                @endcan
+
+                                @can('!koordinator')
                                     <td>
                                         <a href="javascript:void(0)" id="show-judulprojek"
                                             data-url="{{ route('judulprojek.show', $judulprojek->id) }}"
                                             class="btn btn-sm btn-outline-primary"><i class="bi bi-eye-fill "></i></a>
                                     </td>
-                                @endif
+                                @endcan
+
                             </tr>
                         @endforeach
                     @else
@@ -179,7 +173,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('script')

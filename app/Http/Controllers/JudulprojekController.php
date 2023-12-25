@@ -23,14 +23,14 @@ class JudulprojekController extends Controller
         // admin dan koordinator
         if (auth()->user()->level_id === 4 || auth()->user()->level_id === 3) {
             return view('judulprojek.index', [
-                'judulprojeks' => Judulprojek::latest()->filter(request(['search']))->paginate(5)->withQueryString()
+                'judulprojeks' => Judulprojek::with('user')->latest()->filter(request(['search']))->paginate(5)->withQueryString()
             ]);
         }
 
         // mentor
         if (auth()->user()->level_id == 2) {
             return view('judulprojek.index', [
-                'judulprojeks' => Judulprojek::where('pembimbing', auth()->user()->nama)->latest()->filter(request(['search']))->paginate(5)->withQueryString()
+                'judulprojeks' => Judulprojek::with('user')->where('pembimbing', auth()->user()->nama)->latest()->filter(request(['search']))->paginate(5)->withQueryString()
             ]);
         }
 
@@ -45,6 +45,9 @@ class JudulprojekController extends Controller
      */
     public function create()
     {
+
+        $this->authorize('mahasiswa');
+
         $pembimbing = User::where('level_id', 2)->get();
         return view('judulprojek.create', [
             'pembimbing' => $pembimbing
@@ -56,6 +59,8 @@ class JudulprojekController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('mahasiswa');
+
         $validateData = $request->validate([
             'judul' => 'required',
             'pembimbing' => 'string',
@@ -91,6 +96,8 @@ class JudulprojekController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('koordinator');
+
         $judulprojek = Judulprojek::find($id);
         $dataPembimbing = User::where('level_id', 2)->get();
 
@@ -105,6 +112,8 @@ class JudulprojekController extends Controller
      */
     public function update($id, Request $request)
     {
+
+        $this->authorize('koordinator');
 
         $validateData = $request->validate([
             'judul' => 'required',
@@ -124,6 +133,8 @@ class JudulprojekController extends Controller
      */
     public function destroy($id)
     {
+
+        $this->authorize('koordinator');
 
         Judulprojek::destroy($id);
 

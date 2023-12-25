@@ -33,7 +33,6 @@ class PresentasiController extends Controller
 
             return view('presentasi.index', [
                 'presents' => $presents,
-                'status' =>  Logbook::where('user_id', auth()->user()->id)->where('status', 'diterima')->get()
             ]);
         }
 
@@ -55,13 +54,15 @@ class PresentasiController extends Controller
 
             return view('presentasi.index', [
                 'presents' => $presents,
-                'status' =>  Logbook::where('user_id', auth()->user()->id)->where('status', 'diterima')->get()
             ]);
         }
 
+
+        $presents = Presentasi::with('judul')->where('user_id', auth()->user()->id)->filter(request(['search']))->paginate(5)->withQueryString();
+
         // users / mahasiswa
         return view('presentasi.index', [
-            'presents' => Presentasi::where('user_id', auth()->user()->id)->filter(request(['search']))->paginate(5)->withQueryString(),
+            'presents' => $presents,
             'status' =>  Logbook::where('user_id', auth()->user()->id)->where('status', 'diterima')->get()
         ]);
     }
@@ -71,6 +72,9 @@ class PresentasiController extends Controller
      */
     public function create()
     {
+
+        $this->authorize('mahasiswa');
+
         return view('presentasi.create', [
             'juduls' => Judulprojek::where('user_id', auth()->user()->id)->get()
         ]);
@@ -81,6 +85,8 @@ class PresentasiController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('mahasiswa');
+
         $validateData = $request->validate([
             'judul_id' => 'required',
         ]);
@@ -101,8 +107,7 @@ class PresentasiController extends Controller
     {
 
         $present = DB::table('presentasis')
-            ->join('judulprojeks', 'judulprojeks.id', 'presentasis.judul_id')
-            ->join('users', 'users.id', 'judulprojeks.user_id')
+            ->join('users', 'users.id', 'presentasis.user_id')
             ->select('presentasis.*', 'users.nama')
             ->get();
 
@@ -116,6 +121,8 @@ class PresentasiController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('pemXkoor');
+
         return view('presentasi.edit', [
             'present' => Presentasi::find($id)
         ]);
@@ -126,6 +133,7 @@ class PresentasiController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize('pemXkoor');
 
         $rules = [
             'judul_id' => 'required',
@@ -154,6 +162,8 @@ class PresentasiController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('pemXkoor');
+
         Presentasi::destroy($id);
 
         Alert::success('Success!', 'Presentasi Berhasil dihapus');
