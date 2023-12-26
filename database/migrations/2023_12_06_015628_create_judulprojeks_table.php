@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('judulprojeks', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id');
+            $table->ulid('id');
+            $table->foreignUlid('user_id');
             $table->string('judul');
             $table->string('pembimbing')->default('');
             $table->string('status')->default('diajukan');

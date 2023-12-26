@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Logbook;
 use App\Models\Judulprojek;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class LogbookController extends Controller
 {
@@ -117,12 +119,17 @@ class LogbookController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
+
     {
         $this->authorize('pembimbing');
 
-        return view('logbook.edit', [
-            'logbook' =>  Logbook::find($id)
-        ]);
+        try {
+            return view('logbook.edit', [
+                'logbook' =>  Logbook::findOrFail($id)
+            ]);
+        } catch (ModelNotFoundException $error) {
+            return view('errors.404');
+        }
     }
 
     /**

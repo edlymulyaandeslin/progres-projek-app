@@ -8,9 +8,10 @@ use App\Models\Presentasi;
 use App\Models\Judulprojek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use RealRashid\SweetAlert\Facades\Alert;
-
 use function Laravel\Prompts\confirm;
+
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class JudulprojekController extends Controller
 {
@@ -98,13 +99,17 @@ class JudulprojekController extends Controller
     {
         $this->authorize('koordinator');
 
-        $judulprojek = Judulprojek::find($id);
-        $dataPembimbing = User::where('level_id', 2)->get();
+        try {
+            $judulprojek = Judulprojek::findOrFail($id);
+            $dataPembimbing = User::where('level_id', 2)->get();
 
-        return view('judulprojek.edit', [
-            'judulprojek' => $judulprojek,
-            'users' => $dataPembimbing,
-        ]);
+            return view('judulprojek.edit', [
+                'judulprojek' => $judulprojek,
+                'users' => $dataPembimbing,
+            ]);
+        } catch (ModelNotFoundException $error) {
+            return view('errors.404');
+        }
     }
 
     /**
