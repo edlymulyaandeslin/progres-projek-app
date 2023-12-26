@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('logbooks', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('judul_id');
+            $table->ulid('id');
+            $table->foreignUlid('user_id');
+            $table->foreignUlid('judul_id');
             $table->text('description');
             $table->string('status')->default('diajukan');
             $table->timestamps();

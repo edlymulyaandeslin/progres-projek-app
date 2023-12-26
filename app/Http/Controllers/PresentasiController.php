@@ -9,6 +9,7 @@ use App\Models\Judulprojek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PresentasiController extends Controller
 {
@@ -109,9 +110,8 @@ class PresentasiController extends Controller
         $present = DB::table('presentasis')
             ->join('users', 'users.id', 'presentasis.user_id')
             ->select('presentasis.*', 'users.nama')
-            ->get();
-
-        $present = $present->where('id', $id)->first();
+            ->where('presentasis.id', $id)
+            ->first();
 
         return response()->json($present);
     }
@@ -122,10 +122,13 @@ class PresentasiController extends Controller
     public function edit($id)
     {
         $this->authorize('pemXkoor');
-
-        return view('presentasi.edit', [
-            'present' => Presentasi::find($id)
-        ]);
+        try {
+            return view('presentasi.edit', [
+                'present' => Presentasi::findOrFail($id)
+            ]);
+        } catch (ModelNotFoundException $error) {
+            return view('errors.404');
+        }
     }
 
     /**

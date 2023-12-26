@@ -145,36 +145,10 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Congratulations Presentasi Anda Diterima
-                            <i class="bi bi-star-fill text-warning"></i>
-                        </h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        {{--  --}}
                     </div>
                     <div class="modal-body">
-                        <div class="row">
-                            <p>
-                                Jadwal Presentasi Anda
-                            </p>
-                            <table class="mx-2">
-                                <tbody>
-                                    <tr>
-                                        <th>Ketua Tim</th>
-                                        <td>:</td>
-                                        <td id="ketua"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Tanggal</th>
-                                        <td>:</td>
-                                        <td id="tanggal"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Jam</th>
-                                        <td>:</td>
-                                        <td id="jam"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        {{-- --}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -193,12 +167,28 @@
 
                 let judulUrl = $(this).data('url');
 
-                $.get(judulUrl, function(data) {
+                let data = $.get(judulUrl, function(data) {
                     $('#presentView').modal('show');
 
-                    if (data.status === 'diterima') {
+                    if (data.status == 'diajukan') {
+                        $('.modal-header').html(
+                            `<h1 class="modal-title fs-5">Presentasi Belum Diterima
+                            </h1>`
+                        );
+
+                        $('.modal-body').html(
+                            "<p class='text-center'>Tidak Ada Jadwal Presentasi</p>");
+                        console.log('diajukan');
+                    }
+
+                    if (data.status == 'diterima') {
+                        console.log('diterima');
                         // format tanggal
                         let dateFromDatabase = new Date(data.tanggal);
+                        var dayName = dateFromDatabase.toLocaleDateString('id-ID', {
+                            weekday: 'long'
+                        });
+
 
                         function formatTanggal(date) {
                             let options = {
@@ -211,28 +201,67 @@
                         }
                         let formattedDate = formatTanggal(dateFromDatabase);
 
-                        $('#ketua').text(data.nama);
-                        $('#tanggal').text(formattedDate);
-                        $('#jam').text(data.jam + ' WIB');
-                    } else if (data.status === 'ditolak') {
-                        $('.modal-title').text('Maaf Presentasi Ditolak');
+                        $('.modal-header').html(
+                            `<h1 class="modal-title fs-5">Congratulations Presentasi Anda Diterima
+                            <i class="bi bi-star-fill text-warning"></i>
+                            </h1>`
+                        );
+
+                        $('.modal-body').html(
+                            `<div class="row">
+                            <p>
+                                Jadwal Presentasi Anda
+                            </p>
+                            <table class="mx-2">
+                                <tbody>
+                                    <tr>
+                                        <th>Ketua Tim</th>
+                                        <td>:</td>
+                                        <td>${data.nama}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <td>:</td>
+                                        <td>${dayName}, ${formattedDate}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Jam</th>
+                                        <td>:</td>
+                                        <td>${data.jam} WIB</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>`
+                        );
+                    }
+
+                    if (data.status == 'ditolak') {
+                        console.log('ditolak');
+                        $('.modal-header').html(
+                            `<h1 class="modal-title fs-5">Presentasi Ditolak
+                            </h1>`
+                        );
                         $('.modal-body').html(
                             "<p class='text-center'>Silahkan Ajukan Presentasi Kembali!!</p>"
                         );
-                    } else if (data.status === 'selesai') {
-                        $('.modal-title').text('Selamat Presentasi Anda Telah Selesai');
+                    }
+
+
+                    if (data.status == 'selesai') {
+                        console.log('selesai');
+
+                        $('.modal-header').html(
+                            `<h1 class="modal-title fs-5">Selamat Presentasi Anda Telah Selesai
+                            </h1>`
+                        );
                         $('.modal-body').html(
                             "<p class='text-center'>LULUS!!</p>" +
                             "<p class='text-center'><i class='bi bi-star-fill text-warning'></i> <i class='bi bi-star-fill text-warning'></i> <i class='bi bi-star-fill text-warning'> </i><i class='bi bi-star-fill text-warning'> </i><i class='bi bi-star-fill text-warning'></i></p>"
                         );
-                    } else {
-                        $('.modal-title').text('Presentasi Belum Diterima');
-                        $('.modal-body').html(
-                            "<p class='text-center'>Tidak Ada Jadwal Presentasi</p>");
                     }
-
-
                 })
+
+
             })
         })
     </script>

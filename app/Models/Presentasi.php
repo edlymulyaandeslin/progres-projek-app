@@ -6,10 +6,13 @@ use App\Models\User;
 use App\Models\Judulprojek;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
+
+
 
 class Presentasi extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUlids;
 
 
     protected $guarded = ['id'];
