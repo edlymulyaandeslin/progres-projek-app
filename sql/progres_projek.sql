@@ -52,15 +52,14 @@ DROP TABLE IF EXISTS `judulprojeks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `judulprojeks` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) unsigned NOT NULL,
+  `id` char(26) NOT NULL,
+  `user_id` char(26) NOT NULL,
   `judul` varchar(255) NOT NULL,
   `pembimbing` varchar(255) NOT NULL DEFAULT '',
   `status` varchar(255) NOT NULL DEFAULT 'diajukan',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +68,7 @@ CREATE TABLE `judulprojeks` (
 
 LOCK TABLES `judulprojeks` WRITE;
 /*!40000 ALTER TABLE `judulprojeks` DISABLE KEYS */;
-INSERT INTO `judulprojeks` VALUES (17,22,'psychology of money','Rian Lesmana','diterima','2023-12-22 01:14:30','2023-12-22 01:14:55');
+INSERT INTO `judulprojeks` VALUES ('01hjmh9amqwh3wt99ctjfd2mx0','5','Dr.','Ms. Jada Hauck DVM','diajukan','2023-12-26 19:22:33','2023-12-26 19:22:33');
 /*!40000 ALTER TABLE `judulprojeks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,7 +94,7 @@ CREATE TABLE `levels` (
 
 LOCK TABLES `levels` WRITE;
 /*!40000 ALTER TABLE `levels` DISABLE KEYS */;
-INSERT INTO `levels` VALUES (1,'mahasiswa','2023-12-19 21:04:21','2023-12-19 21:04:21'),(2,'mentor','2023-12-19 21:04:21','2023-12-19 21:04:21'),(3,'koordinator','2023-12-19 21:04:21','2023-12-19 21:04:21'),(4,'admin','2023-12-19 21:04:21','2023-12-19 21:04:21');
+INSERT INTO `levels` VALUES (1,'mahasiswa','2023-12-26 19:22:33','2023-12-26 19:22:33'),(2,'mentor','2023-12-26 19:22:33','2023-12-26 19:22:33'),(3,'koordinator','2023-12-26 19:22:33','2023-12-26 19:22:33'),(4,'admin','2023-12-26 19:22:33','2023-12-26 19:22:33');
 /*!40000 ALTER TABLE `levels` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -107,15 +106,14 @@ DROP TABLE IF EXISTS `logbooks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `logbooks` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) unsigned NOT NULL,
-  `judul_id` bigint(20) unsigned NOT NULL,
+  `id` char(26) NOT NULL,
+  `user_id` char(26) NOT NULL,
+  `judul_id` char(26) NOT NULL,
   `description` text NOT NULL,
   `status` varchar(255) NOT NULL DEFAULT 'diajukan',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,7 +122,7 @@ CREATE TABLE `logbooks` (
 
 LOCK TABLES `logbooks` WRITE;
 /*!40000 ALTER TABLE `logbooks` DISABLE KEYS */;
-INSERT INTO `logbooks` VALUES (9,22,17,'fitur kesatu','diterima','2023-12-22 01:19:27','2023-12-22 01:20:59'),(11,22,17,'fitur kedua','diterima','2023-12-22 01:20:37','2023-12-22 01:20:50'),(12,22,17,'tesss','diterima','2023-12-22 01:21:21','2023-12-22 01:29:26');
+INSERT INTO `logbooks` VALUES ('01hjmh9an2wy5errty49n4g1t9','3','1','Provident cum deserunt facilis dolores inventore tenetur qui optio modi.','diajukan','2023-12-26 19:22:33','2023-12-26 19:22:33'),('01hjmh9an8p4frbvjwhd1ewpqa','1','1','Quisquam aut exercitationem et velit occaecati aut sequi quidem mollitia rerum rerum et.','diajukan','2023-12-26 19:22:33','2023-12-26 19:22:33'),('01hjmh9anc37gsvhnhs2qjt06a','2','1','Itaque id placeat omnis exercitationem maxime aut odit corporis asperiores est temporibus soluta laboriosam.','diajukan','2023-12-26 19:22:33','2023-12-26 19:22:33'),('01hjmh9anh3ehvn1ca58d8vmg1','4','1','Enim quia molestiae doloribus provident iure excepturi rem.','diajukan','2023-12-26 19:22:33','2023-12-26 19:22:33'),('01hjmh9ann4dvz04bxqfn9b4eb','3','1','Dolor ipsa aut delectus quae cum vitae.','diajukan','2023-12-26 19:22:33','2023-12-26 19:22:33');
 /*!40000 ALTER TABLE `logbooks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -218,16 +216,15 @@ DROP TABLE IF EXISTS `presentasis`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `presentasis` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) unsigned NOT NULL,
-  `judul_id` bigint(20) unsigned NOT NULL,
+  `id` char(26) NOT NULL,
+  `user_id` char(26) NOT NULL,
+  `judul_id` char(26) NOT NULL,
   `tanggal` varchar(255) NOT NULL DEFAULT '',
   `jam` varchar(255) NOT NULL DEFAULT '',
   `status` varchar(255) NOT NULL DEFAULT 'diajukan',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -236,7 +233,7 @@ CREATE TABLE `presentasis` (
 
 LOCK TABLES `presentasis` WRITE;
 /*!40000 ALTER TABLE `presentasis` DISABLE KEYS */;
-INSERT INTO `presentasis` VALUES (3,22,17,'2024-12-12','10:00','selesai','2023-12-22 01:31:14','2023-12-22 01:33:24');
+INSERT INTO `presentasis` VALUES ('01hjmh9anvkc6hqhpa9t82p15x','5','1','1974-05-06','11:18:56','diajukan','2023-12-26 19:22:33','2023-12-26 19:22:33');
 /*!40000 ALTER TABLE `presentasis` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,7 +245,7 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` char(26) NOT NULL,
   `level_id` bigint(20) unsigned NOT NULL,
   `nama` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -266,9 +263,8 @@ CREATE TABLE `users` (
   `tanggal_mulai` varchar(255) NOT NULL DEFAULT '',
   `tanggal_selesai` varchar(255) NOT NULL DEFAULT '',
   `status` varchar(255) NOT NULL DEFAULT 'deactive',
-  PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -277,7 +273,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,4,'Edly Mulya Andeslin','edlymulyaandeslin@gmail.com','$2y$12$EDI5.CiIq6YEeGun4s7Hee8OJ5HU0LAEl9D4f/Ru324L2TxFS2twG','Pasir Pengaraian','2002-03-09','Pasir pengaraian, Rokan hulu','islam','perempuan','Stone Sawyer','2023-12-19 21:04:20','EO6opInONpIyjeUh9WGs6x6CjmK6eV6b3Zi6bBfqRbpp9HeoBd6aQMZ381FC','2023-12-19 21:04:20','2023-12-19 21:04:20','','','deactive'),(2,4,'Admin','admin@gmail.com','$2y$12$g23EUBwdxsCe0bjGTH6Y7O.3zYwgLUe3hnRFfdGmP6pWHVm.vVY1e','Pasir Pengaraian','2002-03-09','Pasir pengaraian, Rokan hulu','islam','perempuan','Data Processing Equipment Repairer',NULL,'YXQNlIjPSQ','2023-12-19 21:04:20','2023-12-19 21:04:20','','','deactive'),(18,1,'sayyid ja\'far','sayyidjafar@gmail.com','$2y$12$.mccC3nLcP0yzU8SDdaLqeja4XNfx3a9DrR0pZ6fSGvy5X5E9KInq','rokan','2000-12-12','rokan','islam','laki-laki','penjudi','2023-12-22 00:25:11',NULL,'2023-12-22 00:11:14','2023-12-22 00:28:36','','','active'),(19,2,'Rian Lesmana','rianlesmanaputra80@gmail.com','$2y$12$tn.3857nHuOZU1x8WapOmuNsZ5qpWWNB5L/6VWtd9GU5PmcU/uCj2','surga','2000-12-12','surga','islam','laki-laki','pejudi handal','2023-12-22 00:32:03',NULL,'2023-12-22 00:29:59','2023-12-22 00:32:58','','','active'),(20,3,'laska dwi prayoga','laskaprayoga@gmail.com','$2y$12$iFGfPoC8bvjMLmRLNkDUBe952/Kqd3Nv3nym87keJcn7dUBhA3ht6','dalu dalu','2000-12-12','dalu dalu','islam','laki-laki','murid rian','2023-12-22 00:36:00',NULL,'2023-12-22 00:34:23','2023-12-22 00:37:29','','','active'),(21,1,'dina rahayu','rahayudina190@gmail.com','$2y$12$didEtV02DOg5r1oxQMXqfe8Y/BsZvkJ5HQN9lrZqa4cnuZuivr69S','muara musu','2000-12-12','muara musu','islam','laki-laki','belajar judi','2023-12-22 00:40:21',NULL,'2023-12-22 00:38:32','2023-12-22 00:41:14','','','active'),(22,1,'edly mulya andeslin','edlinoje0@gmail.com','$2y$12$dtUhN23hz5XRApKCGIoxLetwqoJ9t.KgNCIoZejd.ZR6tUXgnP0XG','pasir pengaraian','2000-02-20','jalan bukit beringin, luba hilir','islam','laki-laki','penjoki','2023-12-22 00:42:59',NULL,'2023-12-22 00:42:34','2023-12-22 01:32:03','2022-10-12','2023-08-10','active');
+INSERT INTO `users` VALUES ('01hjmh9am9kzrqedapcsjbtgdh',3,'Dina Rahayu','dinarahayu@gmail.com','$2y$12$VhAwJf1TKIPhu7jf83fwiOb32ymwt/0GVwsaIqhAyttH5GslWkCe6','Mumbai','2010-03-19','Pasir pengaraian, Rokan hulu','islam','laki-laki','Medical Technician','2023-12-26 19:22:33','dEJBGOwXNv','2023-12-26 19:22:33','2023-12-26 19:22:33','','','deactive'),('01hjmh99a3340r2p8fjpbnjb98',4,'Edly Mulya Andeslin','edlymulyaandeslin@gmail.com','$2y$12$Ttj1vtIvN1TAZpvQYn10Xefb5FzN9hHlYtbRQxB6iuGst.FEuQR0.','Pasir Pengaraian','2002-03-09','Pasir pengaraian, Rokan hulu','islam','perempuan','Crushing Grinding Machine Operator','2023-12-26 19:22:31','JCi9Z0OtWa','2023-12-26 19:22:31','2023-12-26 19:22:31','','','deactive'),('01hjmh9a9sq5vasp310r8wassn',2,'Laska Prayoga','laskaprayoga@gmail.com','$2y$12$/1CEYXA9reel/EKKouuzeOIf1GbgVi147S2nVZwj03DTqmqQA950S','Dalu Dalu','2007-03-19','Pasir pengaraian, Rokan hulu','islam','perempuan','Executive Secretary','2023-12-26 19:22:32','7Ujk8ime07','2023-12-26 19:22:32','2023-12-26 19:22:32','','','deactive'),('01hjmh99mx9tf2s1qahks3mnxn',1,'Rian Lesmana','rianlesmanaputra@gmail.com','$2y$12$f5nn6wvVfop/jH6SNlbteeoA5yMXxz2taGafA10Rb/gr/1.36ro4m','Surau Gading','2014-03-19','Pasir pengaraian, Rokan hulu','islam','perempuan','Operations Research Analyst','2023-12-26 19:22:32','tf8OXDwaZp','2023-12-26 19:22:32','2023-12-26 19:22:32','','','deactive'),('01hjmh99z8j5jxmg0jrcm4sssm',1,'Sayyid Jafar','sundek@gmail.com','$2y$12$4UJyCNQu5iGtW2GTg2/ge.BrhkakUfLCU5S0gM8l1h7SWjoF88bWq','Mumbai','2010-03-19','Pasir pengaraian, Rokan hulu','islam','perempuan','Visual Designer','2023-12-26 19:22:32','dVVh0cbchc','2023-12-26 19:22:32','2023-12-26 19:22:32','','','deactive');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -294,4 +290,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-22 15:38:01
+-- Dump completed on 2023-12-27  9:23:56
