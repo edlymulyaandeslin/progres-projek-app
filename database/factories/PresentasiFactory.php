@@ -17,8 +17,8 @@ class PresentasiFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => mt_rand(1, 5),
-            'judul_id' => 1,
+            'user_id' => fake()->uuid(),
+            'judul_id' => fake()->uuid(),
             'tanggal' => fake()->date(),
             'jam' => fake()->time(),
         ];

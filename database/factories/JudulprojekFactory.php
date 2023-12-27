@@ -17,7 +17,7 @@ class JudulprojekFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => mt_rand(1, 5),
+            'user_id' => fake()->uuid(),
             'judul' => fake()->title(),
             'pembimbing' => fake()->name(),
         ];

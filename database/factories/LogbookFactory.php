@@ -17,7 +17,7 @@ class LogbookFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => mt_rand(1, 5),
+            'user_id' => fake()->uuid(),
             'judul_id' => 1,
             'description' => fake()->sentence(10),
         ];

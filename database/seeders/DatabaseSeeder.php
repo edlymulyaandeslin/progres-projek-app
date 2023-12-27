@@ -95,11 +95,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        Judulprojek::factory(1)->create();
+        // Judulprojek::factory(1)->create();
 
-        Logbook::factory(5)->create();
+        // Logbook::factory(5)->create();
 
-        Presentasi::factory(1)->create();
+        // Presentasi::factory(1)->create();
 
         Level::create([
             'name' => 'mahasiswa'
@@ -116,10 +116,5 @@ class DatabaseSeeder extends Seeder
         Level::create([
             'name' => 'admin'
         ]);
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }
