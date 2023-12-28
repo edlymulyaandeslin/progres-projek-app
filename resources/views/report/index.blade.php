@@ -8,37 +8,31 @@
             <div class="container mb-3">
 
                 <div class="row">
-
-                    <div class="col-md-5 d-flex gap-2">
-                        <form id="dateFilterForm" action="/laporan/filter" method="get"
-                            class="d-flex justify-content-between gap-2">
+                    <div class="col-md-7">
+                        <form action="/laporan/filter" method="get" class="d-flex gap-2">
                             @csrf
                             <div>
                                 <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
-                                <input type="date" name="tanggal_mulai" class="form-control" id="tanggal_mulai">
+                                <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control"
+                                    id="tanggal_mulai" value="{{ old('tanggal_mulai') }}">
                             </div>
 
                             <div>
                                 <label for="tanggal_selesai" class="form-label">Tanggal Selesai</label>
-                                <input type="date" name="tanggal_selesai" class="form-control" id="tanggal_selesai">
+                                <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-control"
+                                    id="tanggal_selesai" value="{{ old('tanggal_selesai') }}">
                             </div>
 
                             <div class="d-flex align-items-end">
-                                <button class="btn btn-sm btn-primary" type="submit">Filter</button>
+                                <button class="btn btn-sm btn-primary" type="submit"><i class="bi bi-funnel-fill"></i>
+                                    Filter</button>
                             </div>
                         </form>
-
                     </div>
 
-                    <div class="col-md-7 d-flex justify-content-between">
-                        <div class="ps-4 d-flex align-items-end">
-                            <a href="/laporan" class="btn btn-sm btn-danger" type="submit">reset</a>
-                        </div>
-                        <div class="d-flex align-items-end">
-                            <a href="/laporan/view" class="btn btn-sm btn-danger"><i class="bi bi-file-earmark-text"></i>
-                                Cetak
-                                Pdf</a>
-                        </div>
+                    <div class="col-md d-flex align-items-end justify-content-end">
+                        <a href="/laporan/downloadPdf" class="btn btn-sm btn-danger"><i class="bi bi-file-earmark-text"></i>
+                            Cetak</a>
                     </div>
                 </div>
 
@@ -59,39 +53,44 @@
                 </thead>
                 <tbody>
 
-                    @foreach ($mahasiswas as $key => $mahasiswa)
-                        <tr class="text-center">
-                            <td>{{ $mahasiswas->firstItem() + $key }}</td>
-                            <td>{{ $mahasiswa->nama }}</td>
-                            <td>{{ $mahasiswa->email }}</td>
+                    @if ($mahasiswas->count() != 0)
+                        @foreach ($mahasiswas as $key => $mahasiswa)
+                            <tr class="text-center">
+                                <td>{{ $mahasiswas->firstItem() + $key }}</td>
+                                <td>{{ $mahasiswa->nama }}</td>
+                                <td>{{ $mahasiswa->email }}</td>
 
-                            @if ($mahasiswa->judul->count() !== 0)
-                                @foreach ($mahasiswa->judul as $key => $judul)
-                                    @if ($judul->status == 'diterima' && $key == 0)
-                                        <td>{{ $judul->judul }}</td>
-                                    @endif
-                                @endforeach
-                            @else
-                                <td>{{ '-' }}</td>
-                            @endif
+                                @if ($mahasiswa->judul->count() !== 0)
+                                    @foreach ($mahasiswa->judul as $key => $judul)
+                                        @if ($judul->status == 'diterima' && $key == 0)
+                                            <td>{{ $judul->judul }}</td>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <td>{{ '-' }}</td>
+                                @endif
 
-                            <td>
-                                {{ $mahasiswa->tanggal_mulai ? \Carbon\Carbon::parse($mahasiswa->tanggal_mulai)->format('j F Y') : '-' }}
-                            </td>
+                                <td>
+                                    {{ $mahasiswa->tanggal_mulai ? \Carbon\Carbon::parse($mahasiswa->tanggal_mulai)->format('j F Y') : '-' }}
+                                </td>
 
-                            <td>
-                                {{ $mahasiswa->tanggal_selesai ? \Carbon\Carbon::parse($mahasiswa->tanggal_selesai)->format('j F Y') : '-' }}
-                            </td>
+                                <td>
+                                    {{ $mahasiswa->tanggal_selesai ? \Carbon\Carbon::parse($mahasiswa->tanggal_selesai)->format('j F Y') : '-' }}
+                                </td>
 
-                            <td>{{ $mahasiswa->status }}</td>
-                            <td>
-                                <a href="javascript:void(0)" id="show-mahasiswa"
-                                    data-url="{{ route('mahasiswa.show', $mahasiswa->id) }}"
-                                    class="btn btn-sm btn-outline-primary"><i class="bi bi-eye-fill"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    @endforeach
+                                <td>{{ $mahasiswa->status }}</td>
+                                <td>
+                                    <a href="javascript:void(0)" id="show-mahasiswa"
+                                        data-url="{{ route('mahasiswa.show', $mahasiswa->id) }}"
+                                        class="btn btn-sm btn-outline-primary"><i class="bi bi-eye-fill"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <td colspan="8" class="text-center">No Data</td>
+                    @endif
+
                 </tbody>
             </table>
 
@@ -216,7 +215,7 @@
                             day: 'numeric'
                         };
                         return date.toLocaleDateString('id-ID',
-                            options); // Sesuaikan dengan preferensi lokal Anda
+                            options);
                     }
                     let tanggalLahir = formatTanggal(tanggalLahirDb);
                     let tanggalMulai = formatTanggal(tanggalMulaiDb);
@@ -243,10 +242,11 @@
                     });
 
                     $('#judul').val(judul[0] ? judul[0] : '-');
-
-
                 })
             })
+
+
+
         })
     </script>
 @endsection

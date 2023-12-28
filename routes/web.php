@@ -47,9 +47,9 @@ Route::resource('/koordinator', KoordinatorController::class)->middleware('admin
 Route::resource('/mahasiswa', MahasiswaController::class)->middleware('auth');
 
 // route report & cetak pdf
-Route::get('/laporan', [LaporanController::class, 'laporan'])->middleware('admin');
-Route::get('/laporan/view', [LaporanController::class, 'viewPdf'])->middleware('admin');
-Route::get('/laporan/filter', [LaporanController::class, 'laporanFilter'])->middleware('admin');
+Route::get('/laporan', [LaporanController::class, 'index'])->middleware('admin');
+Route::get('/laporan/filter', [LaporanController::class, 'filter'])->middleware('admin');
+Route::get('/laporan/downloadPdf', [LaporanController::class, 'cetakPdf'])->middleware('admin');
 
 // authenticate register dan login
 Route::prefix('auth')->group(function () {

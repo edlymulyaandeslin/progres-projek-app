@@ -8,7 +8,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class LaporanController extends Controller
 {
-    public function laporan()
+    public function index()
     {
 
         $user = User::with(['judul' => function ($query) {
@@ -22,32 +22,61 @@ class LaporanController extends Controller
         ]);
     }
 
-    public function viewPdf()
+    public function cetakPdf(Request $request)
     {
-        $users = User::where('level_id', 1)->latest()->get();
+        $tanggal_mulai = session('tanggal_mulai');
+        $tanggal_selesai = session('tanggal_selesai');
+
+        if ($tanggal_mulai != null || $tanggal_selesai != null) {
+            $user = User::with(['judul' => function ($query) {
+                $query->select('user_id', 'judul', 'status');
+            }])
+                ->whereBetween('tanggal_mulai', [$tanggal_mulai, $tanggal_selesai])
+                ->whereBetween('tanggal_selesai', [$tanggal_mulai, $tanggal_selesai])
+                ->where('level_id', 1)
+                ->get();
+        } else {
+            $user = User::with(['judul' => function ($query) {
+                $query->select('user_id', 'judul', 'status');
+            }])
+                ->where('level_id', 1)
+                ->latest()
+                ->get();
+        }
 
         $data = [
-            'users' => $users
+            'users' => $user
         ];
 
         $pdf = Pdf::loadView('report.document', $data)->setPaper('A4', 'landscape');
 
-
         return $pdf->stream('document.pdf');
     }
 
-    public function laporanFilter(Request $request)
+    public function filter(Request $request)
     {
         $tanggal_mulai = $request->tanggal_mulai;
         $tanggal_selesai = $request->tanggal_selesai;
 
-        $user = User::with(['judul' => function ($query) {
-            $query->select('user_id', 'judul', 'status');
-        }])
-            ->whereDate('tanggal_mulai', '>=', $tanggal_mulai)
-            ->whereDate('tanggal_selesai', '<=', $tanggal_selesai)
-            ->where('level_id', 1)
-            ->paginate(10);
+        session(['tanggal_mulai' => $tanggal_mulai]);
+        session(['tanggal_selesai' => $tanggal_selesai]);
+
+        if ($tanggal_mulai != null || $tanggal_selesai != null) {
+            $user = User::with(['judul' => function ($query) {
+                $query->select('user_id', 'judul', 'status');
+            }])
+                ->whereBetween('tanggal_mulai', [$tanggal_mulai, $tanggal_selesai])
+                ->whereBetween('tanggal_selesai', [$tanggal_mulai, $tanggal_selesai])
+                ->where('level_id', 1)
+                ->paginate(10);
+        } else {
+            $user = User::with(['judul' => function ($query) {
+                $query->select('user_id', 'judul', 'status');
+            }])
+                ->where('level_id', 1)
+                ->paginate(10);
+        }
+
 
         return view('report.index', [
             'mahasiswas' => $user

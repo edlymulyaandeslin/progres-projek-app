@@ -13,6 +13,10 @@
                 page-break-after: always;
             }
 
+            .text-center {
+                text-align: center;
+            }
+
             .px {
                 padding-top: 4px;
                 padding-bottom: 4px;
@@ -46,43 +50,48 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($users as $mahasiswa)
-                        <tr style="text-align: center">
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $mahasiswa->nama }}</td>
-                            <td>{{ $mahasiswa->email }}</td>
-                            <td>{{ $mahasiswa->tempat_lahir }}</td>
-                            <td>
-                                {{ \Carbon\Carbon::parse($mahasiswa->tanggal_lahir)->format('j F Y') }}
-                            </td>
+                    @if ($users->count() != 0)
 
-                            <td>{{ $mahasiswa->alamat }}</td>
-                            <td>{{ $mahasiswa->agama }}</td>
-                            <td>{{ $mahasiswa->jenis_kelamin }}</td>
+                        @foreach ($users as $mahasiswa)
+                            <tr style="text-align: center">
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $mahasiswa->nama }}</td>
+                                <td>{{ $mahasiswa->email }}</td>
+                                <td>{{ $mahasiswa->tempat_lahir }}</td>
+                                <td>
+                                    {{ \Carbon\Carbon::parse($mahasiswa->tanggal_lahir)->format('j F Y') }}
+                                </td>
 
-                            @if ($mahasiswa->judul->count() !== 0)
-                                @foreach ($mahasiswa->judul as $judul)
-                                    @if ($judul->status == 'diterima')
-                                        <td>{{ $judul->judul }}</td>
-                                    @elseif ($judul->status !== 'diterima')
-                                        <td>{{ '-' }}</td>
-                                    @endif
-                                @endforeach
-                            @else
-                                <td>{{ '-' }}</td>
-                            @endif
+                                <td>{{ $mahasiswa->alamat }}</td>
+                                <td>{{ $mahasiswa->agama }}</td>
+                                <td>{{ $mahasiswa->jenis_kelamin }}</td>
 
-                            <td>
-                                {{ $mahasiswa->tanggal_mulai ? \Carbon\Carbon::parse($mahasiswa->tanggal_mulai)->format('j F Y') : '-' }}
-                            </td>
+                                @if ($mahasiswa->judul->count() !== 0)
+                                    @foreach ($mahasiswa->judul as $judul)
+                                        @if ($judul->status == 'diterima')
+                                            <td>{{ $judul->judul }}</td>
+                                        @elseif ($judul->status !== 'diterima')
+                                            <td>{{ '-' }}</td>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <td>{{ '-' }}</td>
+                                @endif
 
-                            <td>
-                                {{ $mahasiswa->tanggal_selesai ? \Carbon\Carbon::parse($mahasiswa->tanggal_selesai)->format('j F Y') : '-' }}
-                            </td>
+                                <td>
+                                    {{ $mahasiswa->tanggal_mulai ? \Carbon\Carbon::parse($mahasiswa->tanggal_mulai)->format('j F Y') : '-' }}
+                                </td>
 
-                            <td>{{ $mahasiswa->status }}</td>
-                        </tr>
-                    @endforeach
+                                <td>
+                                    {{ $mahasiswa->tanggal_selesai ? \Carbon\Carbon::parse($mahasiswa->tanggal_selesai)->format('j F Y') : '-' }}
+                                </td>
+
+                                <td>{{ $mahasiswa->status }}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <td colspan="12" class="text-center">No Data</td>
+                    @endif
 
                 </tbody>
 
