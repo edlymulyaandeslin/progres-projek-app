@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class AuthController extends Controller
@@ -128,5 +129,27 @@ class AuthController extends Controller
     public function verifyEmailNotice()
     {
         return view('auth.verify-email');
+    }
+
+    public function githubRedirect()
+    {
+        return Socialite::driver('github')->redirect();
+    }
+
+    public function githubCallback()
+    {
+        $githubUser = Socialite::driver('github')->user();
+
+        $user = User::updateOrCreate([
+            'level_id' => 1,
+            'nama' => $githubUser->getName(),
+            'email' => $githubUser->getEmail()
+        ]);
+
+        Auth::login($user);
+
+        // dd($githubUser->getName());
+
+        return redirect('/');
     }
 }

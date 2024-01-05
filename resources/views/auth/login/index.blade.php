@@ -16,17 +16,19 @@
             <div class="row">
                 <div>
 
-                    <div class="mt-5 mb-3 text-center text-white">
+                    <div class="mt-5 mb-3 text-center text-white d-flex flex-column">
                         <h2 class="fw-bold">Progres Projek<h2>
-                                <hr>
-                                <h3>Login</h3>
+                                <h3 class="border-top pt-3">Login</h3>
+                                <div>
+                                    <a href="{{ route('github.redirect') }}">
+                                        <img src="/img/github.png" class="img-thumbnail rounded-circle" width="50px"
+                                            alt="">
+                                    </a>
+                                </div>
                     </div>
 
                     <form action="/auth/login" method="post">
                         @csrf
-                        <div class="input-box">
-
-                        </div>
                         <div class=" input-box">
                             <input type="text" class="input-field @error('email') is-invalid @enderror"
                                 placeholder="Email" id="email" name="email" value="{{ old('email') }}">
