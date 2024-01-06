@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
 use Laravel\Socialite\Facades\Socialite;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -159,6 +158,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         Alert::success('Selamat Datang ' . $githubUser->getName() ?? $githubUser->getNickname())->toToast()->autoClose(3000);
+
 
         return redirect('/');
     }
