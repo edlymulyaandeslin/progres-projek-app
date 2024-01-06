@@ -74,10 +74,14 @@ Route::post('/email/verification-notification/{id}', [AuthController::class, 'se
 
 // verified
 Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verified'])
-    // ->middleware(['auth', 'signed'])
     ->name('verification.verify');
 
 // notice verify
 Route::get('/email/verify', [AuthController::class, 'verifyEmailNotice'])
     ->middleware('auth')
     ->name('verification.notice');
+
+
+// Registasi with socialite
+Route::get('/auth/redirect', [AuthController::class, 'githubRedirect'])->name('github.redirect');
+Route::get('/github/redirect', [AuthController::class, 'githubCallback'])->name('github.callback');
