@@ -57,7 +57,7 @@
 
                     <div>
                         <label for="remember" class="text-white">
-                            <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                            <input type="checkbox" name="remember" id="remember">
                             Remember Me
                         </label>
                     </div>
