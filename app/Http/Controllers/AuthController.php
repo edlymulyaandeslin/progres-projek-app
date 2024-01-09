@@ -50,23 +50,38 @@ class AuthController extends Controller
 
     public function authenticate(Request $request)
     {
+
+
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:8'
         ]);
 
+        $user = User::where('email', $credentials['email'])->first();
+
+
+        if (!$user) {
+
+            Alert::error('Login Gagal!')->toToast()->autoClose(3000);
+
+            return back();
+        }
+
+        if (!$user->hasVerifiedEmail()) {
+
+            Alert::error('Email not Verified!')->toToast()->autoClose(3000);
+
+            return redirect()->to('/auth/login');
+        }
+
         if (Auth::attempt($credentials, $request->filled('remember'))) {
 
-            $request->session()->regenerate();;
+            $request->session()->regenerate();
 
             Alert::success('Login Berhasil')->toToast()->autoClose(3000);
 
             return redirect()->intended('/');
         }
-
-        Alert::error('Login Gagal')->toToast()->autoClose(3000);
-
-        return back();
     }
 
     // logout
@@ -145,6 +160,7 @@ class AuthController extends Controller
             'nama' => $githubUser->getName() ?? $githubUser->getNickname(),
             'email' => $githubUser->getEmail(),
             'remember_token' => $githubUser->token,
+            'status' => 'active',
         ];
 
         $whereEmail = ['email' =>  $githubUser->getEmail()];

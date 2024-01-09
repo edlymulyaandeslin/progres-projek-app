@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             'pekerjaan' => fake()->jobTitle(),
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
+            'status' => 'active'
         ]);
 
         User::create([
@@ -45,7 +46,6 @@ class DatabaseSeeder extends Seeder
             'agama' => 'islam',
             'jenis_kelamin' => fake()->randomElement(['laki-laki', 'perempuan']),
             'pekerjaan' => fake()->jobTitle(),
-            'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ]);
 
@@ -60,7 +60,6 @@ class DatabaseSeeder extends Seeder
             'agama' => 'islam',
             'jenis_kelamin' => fake()->randomElement(['laki-laki', 'perempuan']),
             'pekerjaan' => fake()->jobTitle(),
-            'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ]);
 
@@ -75,7 +74,6 @@ class DatabaseSeeder extends Seeder
             'agama' => 'islam',
             'jenis_kelamin' => fake()->randomElement(['laki-laki', 'perempuan']),
             'pekerjaan' => fake()->jobTitle(),
-            'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ]);
 
@@ -90,7 +88,6 @@ class DatabaseSeeder extends Seeder
             'agama' => 'islam',
             'jenis_kelamin' => fake()->randomElement(['laki-laki', 'perempuan']),
             'pekerjaan' => fake()->jobTitle(),
-            'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ]);
 

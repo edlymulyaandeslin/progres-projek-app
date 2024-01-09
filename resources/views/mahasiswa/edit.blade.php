@@ -78,6 +78,21 @@
                                             Perempuan
                                         </label>
                                     </div>
+                                @else
+                                    <div class="m-2">
+                                        <input class="form-check-input" type="radio" name="jenis_kelamin"
+                                            id="jenis_kelamin" value="laki-laki">
+                                        <label class="form-check-label" for="jenis_kelamin">
+                                            Laki Laki
+                                        </label>
+                                    </div>
+                                    <div class="m-2">
+                                        <input class="form-check-input" type="radio" name="jenis_kelamin"
+                                            id="jenis_kelamin" value="perempuan">
+                                        <label class="form-check-label" for="jenis_kelamin">
+                                            Perempuan
+                                        </label>
+                                    </div>
                                 @endif
                             </div>
 
@@ -105,8 +120,8 @@
 
                         <div class="mb-3">
                             <label for="alamat" class="form-label">Alamat</label>
-                            <input type="text" class="form-control @error('alamat') is-invalid @enderror" id="alamat"
-                                name="alamat" value="{{ old('alamat', $mahasiswa->alamat) }}">
+                            <input type="text" class="form-control @error('alamat') is-invalid @enderror"
+                                id="alamat" name="alamat" value="{{ old('alamat', $mahasiswa->alamat) }}">
                             @error('alamat')
                                 <p class="text-danger">
                                     {{ $message }}

@@ -138,6 +138,10 @@ class MahasiswaController extends Controller
             $validateData['password'] = bcrypt($request->input('password'));
         }
 
+        if ($request->input('status') == 'active') {
+            $validateData['email_verified_at'] = date(now());
+        }
+
         if ($request->input('status') == 'deactive') {
             $validateData['email_verified_at'] = null;
         }
